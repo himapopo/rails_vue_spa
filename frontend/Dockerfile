@@ -7,3 +7,8 @@ RUN apt-get update -qq && apt-get -y install \
 RUN mkdir /frontend
 
 WORKDIR /frontend
+
+COPY package.json ./frontend/package.json
+COPY package-lock.json ./frontend/package-lock.json
+
+RUN npm install
