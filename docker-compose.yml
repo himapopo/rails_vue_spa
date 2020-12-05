@@ -19,9 +19,9 @@ services:
 
   frontend:
     build: ./frontend
-    command: npm run serve
     volumes:
       - ./frontend:/frontend
+    command: npm run serve
     ports: 
       - 8080:8080
 
