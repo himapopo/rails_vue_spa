@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse justify-content-end mr-5" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link" href="/users/new">会員登録</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Pricing</a>
