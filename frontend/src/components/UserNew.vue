@@ -69,20 +69,20 @@ export default {
     onImageChange(e){
       const images = e.target.files || e.dataTransfer.files //画像ファイルが選択されたら imagesに代入
       this.getBase64(images[0]) // 画像ファイルをBase64エンコードする処理 戻り値は promise
-      .then(image => { //返ってきたresolve関数(成功した値)
+      .then(image => { //成功コールバック関数実行
         console.log(image)
-        this.user_params.avatar = image 
+        this.user_params.avatar = image
       })
-      .catch(error => { //返ってきたreject関数(失敗オブジェクト)
+      .catch(error => { //失敗コールバック関数実行
         console.log(error)
       })
     },
     getBase64(file){
-      return new Promise((resolve, reject) => { // Promiseの引数はexecutor executorの持つ二つの関数は主に成功した値と失敗したオブジェクト
+      return new Promise((resolve, reject) => { // resolveは成功時の関数の名前 rejectは失敗時の関数の名前
         const reader = new FileReader(); 
         reader.readAsDataURL(file) // ファイル読み込み
-        reader.onload = () => { resolve(reader.result) } //読み込み成功時戻り値
-        reader.onerror = (error) => { reject(error) } //読み込み失敗時の戻り値
+        reader.onload = () => { resolve(reader.result) } //読み込み成功時 resolve関数実行時の引数を入れる
+        reader.onerror = (error) => { reject(error) } //読み込み失敗時 reject関数実行時の引数を入れる
       })
     }
   }
