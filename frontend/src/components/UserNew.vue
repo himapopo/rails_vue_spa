@@ -25,6 +25,10 @@
             <label for="" class="text-info">パスワード（確認）</label>
             <input type="password" class="form-control" v-model="user_params.password_confirmation">
           </div>
+          <div class="col-12 my-1">
+            <label for="" class="text-info">アバター画像</label>
+            <input type="file" class="form-control-file" @change="onImageChange">
+          </div>
           <div class="col-12 my-3">
             <button class="btn btn-primary btn-block" @click="CreateUser">登録</button>
           </div>
@@ -44,6 +48,7 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
+        avatar: ""
       }
     }
   },
@@ -59,6 +64,25 @@ export default {
         console.log(this.user_params)
         this.$store.state.errors = error.response.data.message,
         console.log(error.response)
+      })
+    },
+    onImageChange(e){
+      const images = e.target.files || e.dataTransfer.files //画像ファイルが選択されたら imagesに代入
+      this.getBase64(images[0]) // 画像ファイルをBase64エンコードする処理 戻り値は promise
+      .then(image => { //返ってきたresolve関数(成功した値)
+        console.log(image)
+        this.user_params.avatar = image 
+      })
+      .catch(error => { //返ってきたreject関数(失敗オブジェクト)
+        console.log(error)
+      })
+    },
+    getBase64(file){
+      return new Promise((resolve, reject) => { // Promiseの引数はexecutor executorの持つ二つの関数は主に成功した値と失敗したオブジェクト
+        const reader = new FileReader(); 
+        reader.readAsDataURL(file) // ファイル読み込み
+        reader.onload = () => { resolve(reader.result) } //読み込み成功時戻り値
+        reader.onerror = (error) => { reject(error) } //読み込み失敗時の戻り値
       })
     }
   }

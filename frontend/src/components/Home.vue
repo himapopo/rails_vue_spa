@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <p>{{ $store.state.message }}</p>    
+        <p class="text-success">{{ $store.state.message }}</p>    
       </div>
       <div class="col-12 text-center" v-for="user in $store.state.users" :key="user.email">
         <p>{{ user.name }}</p>

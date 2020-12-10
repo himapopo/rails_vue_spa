@@ -16,6 +16,8 @@ services:
       - 3000:3000
     volumes:
       - .:/myapp
+    stdin_open: true  #デバッグで止めれる
+    tty: true #デバッグで止めれる
 
   frontend:
     build: ./frontend

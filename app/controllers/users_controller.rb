@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  # userモデルにpassword password_confirmation カラムがないため
+  # ラップされる[:user]キーを外す。
   wrap_parameters :user, include: [:name, :email, :password, :password_confirmation]
   def index
     @users = User.all
@@ -15,9 +17,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def sig_in
+    @user = User.find_by(email: params[:email])
+    if @user.authenticate(params[:password])
+    
+    else
+
+    end
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
   end
 end
