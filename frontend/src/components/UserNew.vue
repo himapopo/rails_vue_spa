@@ -45,10 +45,10 @@ export default {
     return {
       user_params: {
         name: "お好きな名前",
-        email: "",
-        password: "",
-        password_confirmation: "",
-        avatar: ""
+        email: "okok@okok",
+        password: "050507",
+        password_confirmation: "050507",
+        avatar: "",
       }
     }
   },
