@@ -39,12 +39,23 @@ class UsersController < ApplicationController
   end
 
   def sign_in
-    @user = User.find_by(email: params[:email])
-    if @user.authenticate(params[:password])
-    
+    @users = User.all
+    if session[:user_id] != nil 
+      render json: { data: @users, message: "ログインしてます"}, status: 404
     else
-
+      if @user = User.find_by(email: params[:email]).authenticate(params[:password])
+        session[:user_id] = @user.id
+        render json: { data: @user, message: "ログインしました"}, status: 200
+      else
+        render json: { data: @users, message: "no!!"}, status: 400
+      end
     end
+  end
+
+  def sign_out
+    @users = User.all
+    session[:user_id] = nil
+    render json: { data: @users, message: "ログアウトしました" }, status: 200
   end
 
   private

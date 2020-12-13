@@ -2,6 +2,12 @@
   <div class="container my-5">
     <div class="row">
       <div class="col-md-7 mx-auto text-center">
+        <p>{{ $store.state.message}}</p>
+      </div>
+      <div class="col-md-7 text-center">
+        <p class="text-success">{{ $store.state.session.user_id }}</p>    
+      </div>
+      <div class="col-md-7 mx-auto text-center">
         <p>{{ user.name}}</p>
       </div>
       <div class="col-md-7 mx-auto">
