@@ -1,23 +1,32 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import session from './modules/session';
+//import session from './modules/session';
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state:{
-    users: [],
+    users: null,
     message: null,
-    errors: null
+    errors: null,
+    userid: "",
   },
-  modules:{
-    session
+  mutations: {
+    users(state, users) {
+      state.users = users
+    },
+    addsession(state, id){
+      state.userid = id
+    },
+    removesession(state, remove){
+      state.userid = remove
+    }
   },
   plugins: [createPersistedState(
     {
       key: 'vue_app',
-      paths: ['session.user_id'],
+      paths: ['userid'],
     storage: window.sessionStorage,
   }
   )]

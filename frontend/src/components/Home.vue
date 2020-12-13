@@ -5,7 +5,7 @@
         <p class="text-success">{{ $store.state.message }}</p>    
       </div>
       <div class="col-12 text-center">
-        <p class="text-success">{{ $store.state.session.user_id }}</p>    
+        <p class="text-success">{{ $store.state.userid }}</p>    
       </div>
       <div class="col-12 text-center" v-for="user in $store.state.users" :key="user.email">
         <router-link :to="{ path: `/users/${user.id}`}">{{ user.name }}：{{ user.email}}</router-link>
@@ -27,7 +27,7 @@ export default {
       axios.get('http://localhost:3000/users')
       .then(response => {
         console.log(response)
-        this.$store.state.users = response.data.data
+        this.$store.commit("users", response.data.data)
       })
       .catch(error => {
         console.log(error)

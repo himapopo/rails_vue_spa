@@ -5,7 +5,7 @@
         <p>{{ $store.state.message}}</p>
       </div>
       <div class="col-md-7 text-center">
-        <p class="text-success">{{ $store.state.session.user_id }}</p>    
+        <p class="text-success">{{ $store.state.userid }}</p>    
       </div>
       <div class="col-md-7 mx-auto text-center">
         <p>{{ user.name}}</p>

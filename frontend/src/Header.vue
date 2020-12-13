@@ -9,11 +9,14 @@
       <li class="nav-item">
         <a class="nav-link" href="/users/new">会員登録</a>
       </li>
-      <li class="nav-item" v-if="$store.state.session.user_id == null">
+      <li class="nav-item" v-if="$store.state.userid == ''">
         <a class="nav-link" href="/sign_in">ログイン</a>
       </li>
       <li class="nav-item" v-else>
         <p class="nav-link" @click="LogOut">ログアウト</p>
+      </li>
+      <li class="nav-item" v-if="$store.state.userid != ''">
+        <router-link :to="{ path: `/users/${$store.state.userid}` }">マイページ</router-link>
       </li>
     </ul>
   </div>
@@ -27,10 +30,11 @@ export default {
     LogOut(){
       axios.get(`http://localhost:3000/sign_out`)
       .then(response => {
-        this.$store.state.users = response.data.data
         this.$store.state.message = response.data.message
-        this.$store.state.session.user_id = null
-        this.$router.push('/')
+        this.$store.commit('removesession', '')
+        this.$router.push('/').catch(err => {
+          console.log(err)
+        })
       }).
       catch(err => {
         console.log(err)
