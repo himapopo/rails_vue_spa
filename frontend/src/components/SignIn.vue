@@ -43,7 +43,8 @@ export default {
       .then(response => {
         console.log(response)
         this.$store.state.message = response.data.message
-        this.$store.commit('addsession', String(response.data.data.id))
+        this.$store.commit('add_session', String(response.data.data.id))
+        this.$store.commit('add_session_name', response.data.data.name)
         this.$router.push(`/users/${response.data.data.id}`)
       })
       .catch(error => {

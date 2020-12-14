@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar]
   before_action :user_all
   def index
-    render json: { data: @users }, status: 200
+    render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
   end
 
   def create 

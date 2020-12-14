@@ -5,20 +5,23 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end mr-md-5" id="navbarNav">
-    <ul class="navbar-nav text-right" v-if="$store.state.userid == ''">
+    <ul class="navbar-nav text-right" v-if="$store.state.user_id == ''">
       <li class="nav-item">
         <a class="nav-link" href="/users/new">会員登録</a>
       </li>
-      <li class="nav-item" v-if="$store.state.userid == ''">
+      <li class="nav-item" v-if="$store.state.user_id == ''">
         <a class="nav-link" href="/sign_in">ログイン</a>
       </li>
     </ul>
     <ul class="navbar-nav text-right" v-else>
       <li class="nav-item">
+        <span class="nav-link disabled">{{ $store.state.user_name }}さん</span>
+      </li>
+      <li class="nav-item">
         <span class="nav-link pointer" @click="LogOut">ログアウト</span>
       </li>
       <li class="nav-item">
-        <router-link  class="nav-link" :to="{ path: `/users/${$store.state.userid}` }">マイページ</router-link>
+        <router-link  class="nav-link" :to="{ path: `/users/${$store.state.user_id}` }">マイページ</router-link>
       </li>
     </ul>
   </div>
@@ -33,7 +36,8 @@ export default {
       axios.get(`http://localhost:3000/sign_out`)
       .then(response => {
         this.$store.state.message = response.data.message
-        this.$store.commit('removesession', '')
+        this.$store.commit('remove_session', '')
+        this.$store.commit('remove_session_name', '')
         this.$router.push('/').catch(err => {
           console.log(err)
         })

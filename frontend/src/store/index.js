@@ -10,23 +10,30 @@ export default new Vuex.Store({
     users: null,
     message: null,
     errors: null,
-    userid: "",
+    user_id: "",
+    user_name: ""
   },
   mutations: {
     users(state, users) {
       state.users = users
     },
-    addsession(state, id){
-      state.userid = id
+    add_session(state, id){
+      state.user_id = id
     },
-    removesession(state, remove){
-      state.userid = remove
+    remove_session(state, remove){
+      state.user_id = remove
+    },
+    add_session_name(state, name){
+      state.user_name = name
+    },
+    remove_session_name(state, remove){
+      state.user_name = remove
     }
   },
   plugins: [createPersistedState(
     {
       key: 'vue_app',
-      paths: ['userid'],
+      paths: ['user_id', 'user_name'],
     storage: window.sessionStorage,
   }
   )]
