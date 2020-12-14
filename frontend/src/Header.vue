@@ -5,18 +5,20 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end mr-md-5" id="navbarNav">
-    <ul class="navbar-nav text-right">
+    <ul class="navbar-nav text-right" v-if="$store.state.userid == ''">
       <li class="nav-item">
         <a class="nav-link" href="/users/new">会員登録</a>
       </li>
       <li class="nav-item" v-if="$store.state.userid == ''">
         <a class="nav-link" href="/sign_in">ログイン</a>
       </li>
-      <li class="nav-item" v-else>
-        <p class="nav-link" @click="LogOut">ログアウト</p>
+    </ul>
+    <ul class="navbar-nav text-right" v-else>
+      <li class="nav-item">
+        <span class="nav-link pointer" @click="LogOut">ログアウト</span>
       </li>
-      <li class="nav-item" v-if="$store.state.userid != ''">
-        <router-link :to="{ path: `/users/${$store.state.userid}` }">マイページ</router-link>
+      <li class="nav-item">
+        <router-link  class="nav-link" :to="{ path: `/users/${$store.state.userid}` }">マイページ</router-link>
       </li>
     </ul>
   </div>
@@ -43,3 +45,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.pointer{
+  cursor: pointer;
+}
+</style>

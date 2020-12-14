@@ -4,7 +4,7 @@
       <div class="col-7 mx-auto">
         <div class="row text-center my-5">
           <div class="col-12">
-            <p class="text-danger">{{ $store.state.message }}</p>
+            <span class="text-danger">{{ $store.state.message }}</span>
           </div>
           <div class="col-12 my-2">
             <h2>ログイン</h2>
@@ -18,7 +18,7 @@
             <input type="password" class="form-control" v-model="user_params.password">
           </div>
           <div class="col-12 my-3">
-            <button class="btn btn-primary btn-block" @click="LoginUser">登録</button>
+            <button class="btn btn-primary btn-block" @click="LoginUser">ログイン</button>
           </div>
         </div>
       </div>

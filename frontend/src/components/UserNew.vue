@@ -3,8 +3,9 @@
     <div class="row">
       <div class="col-7 mx-auto">
         <div class="row text-center my-5">
-          <div class="col-12 text-danger" v-for="(error, index) in $store.state.errors" :key="index">
-            <p class="text-danger">{{ error }}</p>
+          <div class="col-12 text-danger" v-for="(values, key, index) in $store.state.errors" :key="index">
+            <span class="text-danger">{{ key }}：</span>
+            <span class="text-danger" v-for="(value, vindex) in values" :key="vindex">{{ value }}</span><br>
           </div>
           <div class="col-12 my-2">
             <h2>会員登録</h2>
@@ -56,9 +57,10 @@ export default {
     CreateUser(){
       axios.post(`http://localhost:3000/users`, this.user_params)
       .then(response => {
-        this.$store.state.users = response.data.data,
+        console.log(response)
         this.$store.state.message = response.data.message
-        this.$router.push('/')
+        this.$store.commit('addsession', String(response.data.data.id))
+        this.$router.push(`/users/${response.data.data.id}`)
       })
       .catch(error => {
         console.log(this.user_params)

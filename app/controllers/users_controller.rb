@@ -2,24 +2,19 @@ class UsersController < ApplicationController
   # userモデルにpassword password_confirmation カラムがないため
   # ラップされる[:user]キーを外す。
   wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar]
+  before_action :user_all
   def index
-    @users = User.all
     render json: { data: @users }, status: 200
   end
 
   def create 
     @user = User.new(user_params)
-    @users = User.all
-    begin
       if @user.save
-      #  @user.parse_base64(params[:avatar])
-        render json: {data: @users, message: "登録完了"}, status: 200
+        session[:user_id] = @user.id
+        render json: {data: @user, message: "登録完了"}, status: 200
       else
-        render json: {data: @user, message: @user.errors}, status: 400
+        render json: {data: @user, message: @user.errors.full_messages}, status: 400
       end
-    rescue => exception
-      render json: { data: @user, message: @user.errors}, status: 404
-    end
   end
 
   def show
@@ -39,21 +34,16 @@ class UsersController < ApplicationController
   end
 
   def sign_in
-    @users = User.all
-    if session[:user_id] != nil 
-      render json: { data: @users, message: "ログインしてます"}, status: 404
+    render json: { data: @users, message: "ログインしてます"}, status: 404 if session[:user_id] != nil 
+    if @user = User.find_by(email: params[:email]).authenticate(params[:password])
+      session[:user_id] = @user.id
+      render json: { data: @user, message: "ログインしました"}, status: 200
     else
-      if @user = User.find_by(email: params[:email]).authenticate(params[:password])
-        session[:user_id] = @user.id
-        render json: { data: @user, message: "ログインしました"}, status: 200
-      else
-        render json: { data: @users, message: "no!!"}, status: 400
-      end
+      render json: { message: "パスワード又はメールアドレスが間違っています"}, status: 400
     end
   end
 
   def sign_out
-    @users = User.all
     session[:user_id] = nil
     render json: { data: @users, message: "ログアウトしました" }, status: 200
   end
@@ -62,5 +52,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
+  end
+
+  def user_all
+    @users = User.all
   end
 end

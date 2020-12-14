@@ -4,9 +4,6 @@
       <div class="col-12 text-center">
         <p class="text-success">{{ $store.state.message }}</p>    
       </div>
-      <div class="col-12 text-center">
-        <p class="text-success">{{ $store.state.userid }}</p>    
-      </div>
       <div class="col-12 text-center" v-for="user in $store.state.users" :key="user.email">
         <router-link :to="{ path: `/users/${user.id}`}">{{ user.name }}：{{ user.email}}</router-link>
       </div>
@@ -37,9 +34,9 @@ export default {
   mounted(){
     this.GetUsers();
   },
-  // beforeRouteLeave(to, from, next){
-  //   this.$store.state.message = null;
-  //   next();
-  // }
+   beforeRouteLeave(to, from, next){
+     this.$store.state.message = null;
+     next();
+   }
 }
 </script>
