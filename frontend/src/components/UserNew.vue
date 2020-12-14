@@ -3,9 +3,8 @@
     <div class="row">
       <div class="col-7 mx-auto">
         <div class="row text-center my-5">
-          <div class="col-12 text-danger" v-for="(values, key, index) in $store.state.errors" :key="index">
-            <span class="text-danger">{{ key }}：</span>
-            <span class="text-danger" v-for="(value, vindex) in values" :key="vindex">{{ value }}</span><br>
+          <div class="col-12 text-danger" v-for="(value, index) in $store.state.errors" :key="index">
+            <span class="text-danger">{{ index + 1 }}：{{ value }}</span>
           </div>
           <div class="col-12 my-2">
             <h2>会員登録</h2>

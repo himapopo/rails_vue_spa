@@ -9,12 +9,12 @@ class UsersController < ApplicationController
 
   def create 
     @user = User.new(user_params)
-      if @user.save
-        session[:user_id] = @user.id
-        render json: {data: @user, message: "登録完了"}, status: 200
-      else
-        render json: {data: @user, message: @user.errors.full_messages}, status: 400
-      end
+    if @user.save
+      session[:user_id] = @user.id
+      render json: {data: @user, message: "登録完了"}, status: 200
+    else
+      render json: {data: @user, message: @user.errors.full_messages}, status: 400
+    end
   end
 
   def show
@@ -23,19 +23,19 @@ class UsersController < ApplicationController
   end
 
   def imagechange
-    @pastuser = User.find(params[:id])
+    @postuser = User.find(params[:id])
     @user = User.find(params[:id])
     @user.avatar = params[:avatar]
     if @user.save
       render json: {data: @user, message: "画像変更"}, status: 200  
     else
-      render json: {data: @pastuser, message: "画像変更できませんでした"}, status: 400
+      render json: {data: @postuser, message: "画像変更できませんでした"}, status: 400
     end
   end
 
   def sign_in
     render json: { data: @users, message: "ログインしてます"}, status: 404 if session[:user_id] != nil 
-    if @user = User.find_by(email: params[:email]).authenticate(params[:password])
+    if @user = User.find_by(email: params[:email]) && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       render json: { data: @user, message: "ログインしました"}, status: 200
     else
