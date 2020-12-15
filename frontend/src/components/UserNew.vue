@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-7 mx-auto">
-        <div class="row text-center my-5">
+        <div class="row text-center">
           <div class="col-12 text-danger" v-for="(value, index) in $store.state.errors" :key="index">
             <span class="text-danger">{{ index + 1 }}：{{ value }}</span>
           </div>
@@ -57,7 +57,7 @@ export default {
       axios.post(`http://localhost:3000/users`, this.user_params)
       .then(response => {
         console.log(response)
-        this.$store.state.message = response.data.message
+        this.$store.commit('add_success_message', response.data.message)
         this.$store.commit('add_session', String(response.data.data.id))
         this.$store.commit('add_session_name', response.data.data.name)
         this.$router.push(`/users/${response.data.data.id}`)

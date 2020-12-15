@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import session from './modules/session';
 import createPersistedState from 'vuex-persistedstate';
+import session from './modules/session';
+import flash from './modules/flash';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state:{
     users: null,
-    message: null,
     errors: null,
   },
   mutations: {
@@ -17,7 +17,8 @@ export default new Vuex.Store({
     }
   },
   modules:{
-    session
+    session,
+    flash
   },
   plugins: [createPersistedState(
     {

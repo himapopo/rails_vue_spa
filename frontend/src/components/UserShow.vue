@@ -1,9 +1,6 @@
 <template>
   <div class="container my-5">
     <div class="row">
-      <div class="col-12 mx-auto text-center" v-if="$store.state.message != null">
-        <p class="text-success">{{ $store.state.message}}</p>
-      </div>
       <div class="col-md-8 mx-auto">
         <div class="row">
           <div class="col-md-4">
@@ -97,12 +94,8 @@ export default {
   },
   mounted(){
     this.getUser();
-  },
-  // beforeRouteEnter(to,from,next){
-  //   next(vm => {
-  //     vm.getUser();
-  //   })
-  // }
+  }
+
 }
 </script>
 
