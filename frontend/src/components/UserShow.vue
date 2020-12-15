@@ -13,8 +13,8 @@
                 <img :src="user.avatar" alt="" class="d-md-block d-none pc-img rounded-circle">
               </div>
               <div class="col-12" v-show="user.avatar == ''">
-                <img :src="no_avatar" alt="" class="d-md-none d-block mobile-img mx-auto rounded-circle" v-if="no_avatar">
-                <img :src="no_avatar" alt="" class="d-md-block d-none pc-img rounded-circle" v-if="no_avatar">
+                <img :src="no_avatar" alt="" class="d-md-none d-block mobile-img mx-auto rounded-circle">
+                <img :src="no_avatar" alt="" class="d-md-block d-none pc-img rounded-circle">
               </div>
               <div class="col-12 my-2" v-if="user.id == $store.state.session.user_id">
                 <input type="file" @change="imageChange">
