@@ -13,13 +13,13 @@
                 <img :src="user.avatar" alt="" class="d-md-block d-none pc-img rounded-circle">
               </div>
               <div class="col-12" v-show="user.avatar == ''">
-                <img src="/dog.jpg" alt="" class="d-md-none d-block mobile-img mx-auto">
-                <img src="/dog.jpg" alt="" class="d-md-block d-none pc-img">
+                <img :src="no_avatar" alt="" class="d-md-none d-block mobile-img mx-auto rounded-circle" v-if="no_avatar">
+                <img :src="no_avatar" alt="" class="d-md-block d-none pc-img rounded-circle" v-if="no_avatar">
               </div>
-              <div class="col-12 my-2">
+              <div class="col-12 my-2" v-if="user.id == $store.state.session.user_id">
                 <input type="file" @change="imageChange">
               </div>
-              <div class="col-12 text-center my-2">
+              <div class="col-12 text-center my-2" v-if="user.id == $store.state.session.user_id">
                 <button @click="imagePost">画像変更</button>
               </div>
             </div>
@@ -49,20 +49,26 @@ export default {
   data(){
     return {
       user: {
+        id: "",
         name: "",
         email: "",
         avatar: "",
       },
-      newavatar: ""
+      newavatar: "",
+      no_avatar: ""
     }
   },
   methods:{
     getUser(){
       axios.get(`http://localhost:3000/users/${this.id}`)
       .then(response => {
+        this.user.id = response.data.data.id,
         this.user.avatar = response.data.data.avatar,
         this.user.name = response.data.data.name,
         this.user.email = response.data.data.email
+        if (this.user.avatar == ''){
+          this.no_avatar = "/dog.jpg"
+        }
       })
     },
     imagePost(){
