@@ -35,9 +35,13 @@ class UsersController < ApplicationController
 
   def sign_in
     render json: { data: @users, message: "ログインしてます"}, status: 404 if session[:user_id] != nil 
-    if @user = User.find_by(email: params[:email]) && @user.authenticate(params[:password])
-      session[:user_id] = @user.id
-      render json: { data: @user, message: "ログインしました"}, status: 200
+    if @user = User.find_by(email: params[:email])
+      if @user.authenticate(params[:password])
+        session[:user_id] = @user.id
+        render json: { data: @user, message: "ログインしました"}, status: 200
+      else
+        render json: { message: "パスワード又はメールアドレスが間違っています"}, status: 400
+      end
     else
       render json: { message: "パスワード又はメールアドレスが間違っています"}, status: 400
     end
@@ -55,6 +59,6 @@ class UsersController < ApplicationController
   end
 
   def user_all
-    @users = User.all
+    @users = User.all.order(id: :desc)
   end
 end
