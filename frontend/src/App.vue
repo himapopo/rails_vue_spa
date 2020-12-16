@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <Header></Header>
-    <span @click="navshow" v-if="!birdnav">検索表示▼</span>
     <transition name="nav" mode="out-in">
       <Nav v-if="birdnav"></Nav>
     </transition>
-    <span @click="navshow" v-if="birdnav">検索非表示▲</span>
+    <span @click="navshow" class="bird-nav-btn" v-if="!birdnav">検索表示▼</span>
+    <span @click="navshow" class="bird-nav-btn" v-if="birdnav">検索非表示▲</span>
     <transition name="flash-fade">
       <div class="col-12 text-center flash" v-if="$store.state.flash.success">
         <span class="text-success">{{ $store.state.flash.success_message }}</span>
@@ -47,24 +47,18 @@ export default {
 
 <style scoped>
 .nav-enter{
-  height: 0;
   opacity: 0;
+  overflow: hidden;
 }
 .nav-enter-active{
-  transition: all .5s;
-}
-.nav-enter-to{
-  height: 100%;
-}
-.nav-leave{
-  height: 100%;
+  transition: 0.5s;
 }
 .nav-leave-to{
-  height: 0;
   opacity: 0;
+  overflow: hidden;
 }
 .nav-leave-active{
-  transition: all .5s;
+  transition: 0s;
 }
 
 .flash-fade-enter{
@@ -110,5 +104,10 @@ export default {
   z-index: 2;
   position: absolute;
   top: 60px;
+}
+
+.bird-nav-btn{
+  position:absolute;
+  right:0;
 }
 </style>
