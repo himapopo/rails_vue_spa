@@ -12,10 +12,19 @@
       <li class="nav-item">
         <a class="nav-link" href='/sign_in'>ログイン</a>
       </li>
+      <li class="nav-item">
+        <router-link class="nav-link" :to="{ path: '/birds' }">鳥さん一覧</router-link>
+      </li>
     </ul>
     <ul class="navbar-nav text-right" v-else>
       <li class="nav-item">
         <span class="nav-link disabled">{{ $store.state.session.user_name }}さん</span>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" :to="{ path: '/birds' }">鳥さん一覧</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" :to="{ path: '/birds/new' }">鳥さん投稿</router-link>
       </li>
       <li class="nav-item">
         <span class="nav-link logout-btn" @click="LogOut">ログアウト</span>

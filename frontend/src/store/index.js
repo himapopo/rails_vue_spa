@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import session from './modules/session';
 import flash from './modules/flash';
+import birds from './modules/birds'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ export default new Vuex.Store({
   },
   modules:{
     session,
-    flash
+    flash,
+    birds
   },
   plugins: [createPersistedState(
     {

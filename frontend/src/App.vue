@@ -4,8 +4,8 @@
     <transition name="nav" mode="out-in">
       <Nav v-if="birdnav"></Nav>
     </transition>
-    <span @click="navshow" class="bird-nav-btn mr-md-5" v-if="!birdnav">検索表示▼</span>
-    <span @click="navshow" class="bird-nav-btn mr-md-5" v-if="birdnav">検索非表示▲</span>
+    <span @click="navshow" class="bird-nav-btn mr-md-5 flash-close" v-if="!birdnav">検索メニュー表示▼</span>
+    <span @click="navshow" class="bird-nav-btn mr-md-5 flash-close" v-if="birdnav">検索メニュー非表示▲</span>
     <transition name="flash-fade">
       <div class="col-12 text-center flash" v-if="$store.state.flash.success">
         <span class="text-success">{{ $store.state.flash.success_message }}</span>
@@ -78,7 +78,7 @@ export default {
   opacity:0;
 }
 .feda-enter-active{
-  transition: 1s;
+  transition: 1.5s;
 }
 .feda-leave-active{
   transition: 0s;
@@ -103,7 +103,7 @@ export default {
 .flash{
   z-index: 2;
   position: absolute;
-  top: 60px;
+  top: 20px;
 }
 
 .bird-nav-btn{

@@ -3,5 +3,6 @@ class User < ApplicationRecord
   has_many :birds
   has_secure_password
 
-  validates :email, uniqueness:true
+  validates :email, uniqueness:true, presence:true
+  validates :name, presence:true
 end

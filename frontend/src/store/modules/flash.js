@@ -11,7 +11,7 @@ const mutations = {
     setTimeout(() => {
       state.success = false
       state.success_message = null
-    },1500)
+    },1000)
   },
   add_error_message(state, message){
     state.error = true

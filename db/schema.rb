@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_051754) do
+ActiveRecord::Schema.define(version: 2020_12_16_145228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,12 +41,12 @@ ActiveRecord::Schema.define(version: 2020_12_16_051754) do
     t.string "size"
     t.string "age"
     t.string "type"
-    t.string "details"
     t.string "image1"
     t.string "image2"
     t.string "image3"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "details"
     t.index ["user_id"], name: "index_birds_on_user_id"
   end
 

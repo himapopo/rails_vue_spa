@@ -13,7 +13,7 @@
       <div class="col-12 col-md-6 text-center border-bottom py-2">
         <input type="text"> <button>検索</button>
       </div>
-      <div class="col-3 text-center" v-for="bird in birds" :key="bird">
+      <div class="col-3 text-center" v-for="bird in $store.state.birds.birds" :key="bird">
         <router-link :to="{path: '#'}">{{ bird }}</router-link>
       </div>
     </div>
@@ -24,10 +24,7 @@
 export default {
   data(){
     return {
-      birds:[
-        "オカメインコ", "セキセイインコ", "キバタン", "オオバタン", "ボウシインコ", "ウロコインコ", "まめるりは",
-        "コザクラインコ", "シロハラインコ", "ヨウム", "コンゴウインコ", "その他"
-      ]
+      
     }
   }
 }
