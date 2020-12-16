@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_10_112824) do
+ActiveRecord::Schema.define(version: 2020_12_16_051754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,20 @@ ActiveRecord::Schema.define(version: 2020_12_10_112824) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "birds", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "size"
+    t.string "age"
+    t.string "type"
+    t.string "details"
+    t.string "image1"
+    t.string "image2"
+    t.string "image3"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_birds_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -47,4 +61,5 @@ ActiveRecord::Schema.define(version: 2020_12_10_112824) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "birds", "users"
 end

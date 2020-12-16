@@ -4,8 +4,8 @@
     <transition name="nav" mode="out-in">
       <Nav v-if="birdnav"></Nav>
     </transition>
-    <span @click="navshow" class="bird-nav-btn" v-if="!birdnav">検索表示▼</span>
-    <span @click="navshow" class="bird-nav-btn" v-if="birdnav">検索非表示▲</span>
+    <span @click="navshow" class="bird-nav-btn mr-md-5" v-if="!birdnav">検索表示▼</span>
+    <span @click="navshow" class="bird-nav-btn mr-md-5" v-if="birdnav">検索非表示▲</span>
     <transition name="flash-fade">
       <div class="col-12 text-center flash" v-if="$store.state.flash.success">
         <span class="text-success">{{ $store.state.flash.success_message }}</span>

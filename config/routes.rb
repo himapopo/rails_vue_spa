@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :birds, only: %i[index destroy show update create]
   resources :users, only: %i[index destroy create update show] 
   post '/sign_in' => 'users#sign_in'
   get '/sign_out' => 'users#sign_out' 
