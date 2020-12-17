@@ -5,6 +5,9 @@ class BirdsController < ApplicationController
   end
 
   def show
+    @bird = Bird.find_by(id: params[:id])
+    @user = @bird.user
+    render json: JSON.pretty_generate({ data: @bird.as_json, user: @user.as_json })
   end
 
   def create
@@ -25,7 +28,7 @@ class BirdsController < ApplicationController
   private 
 
   def birds
-    @birds = Bird.joins(:user).includes(:user).order(id: :desc).select('users.name as user_name, users.*, birds.*')
+    @birds = Bird.joins(:user).includes(:user).order(id: :desc).select('users.name as user_name, users.*')
   end
 
   def bird_params

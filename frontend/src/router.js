@@ -8,6 +8,7 @@ import UserShow from './components/users/UserShow'
 //birds
 import BirdIndex from './components/birds/Index.vue'
 import BirdNew from './components/birds/New'
+import BirdShow from './components/birds/Show'
 Vue.use(Router)
 
 export default new Router ({
@@ -18,6 +19,7 @@ export default new Router ({
     { path: '/sign_in', component: SignIn },
     { path: '/users/:id', component: UserShow, props:true },
     { path: '/birds', component: BirdIndex },
-    { path: '/birds/new', component: BirdNew }
+    { path: '/birds/new', component: BirdNew },
+    { path: '/birds/:id', component: BirdShow, props: true}
   ]
 })
