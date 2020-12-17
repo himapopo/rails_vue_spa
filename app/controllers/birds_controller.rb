@@ -1,7 +1,7 @@
 class BirdsController < ApplicationController
   before_action :birds
   def index
-    render json: { data: @birds }
+    render json: JSON.pretty_generate({ data: @birds.as_json })
   end
 
   def show
@@ -10,9 +10,9 @@ class BirdsController < ApplicationController
   def create
     @bird = Bird.new(bird_params)
     if @bird.save
-      render json: { data: @birds, message: "鳥さんを投稿しました" }, status: 200  
+      render json: { data: @bird, message: "鳥さんを投稿しました" }, status: 200  
     else
-      render json: { data: @bird, message: @bird.errors.full_message }, status: 400
+      render json: { data: @bird, message: @bird.errors.full_messages }, status: 400
     end
   end
 
@@ -25,10 +25,10 @@ class BirdsController < ApplicationController
   private 
 
   def birds
-    @birds = Bird.all.includes(:user).order(id: :desc)
+    @birds = Bird.joins(:user).includes(:user).order(id: :desc).select('users.name as user_name, users.*, birds.*')
   end
 
   def bird_params
-    params.require(:bird).permit(:type, :size, :age, :details, :image1, :image2, :image3, :user_id)
+    params.require(:bird).permit(:name, :size, :age, :details, :image1, :image2, :image3, :user_id)
   end
 end

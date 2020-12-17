@@ -6,9 +6,12 @@
           <div class="col-12 my-3">
             <h1>鳥さん投稿</h1>
           </div>
+          <div class="col-12" v-for="(error, index) in $store.state.errors" :key="error">
+            <span class="text-danger">{{ index + 1 }}：{{ error }}</span>
+          </div>
           <div class="col-12 my-3">
             <label for="" class="text-success border-bottom pb-1 border-success">鳥さんの種類</label><br>
-            <select class="form-control" name="type" id="" v-model="bird.type">
+            <select class="form-control" name="name" id="" v-model="bird.name">
               <option value="start" disabled>種類を選択してください</option>
               <option v-for="bird in $store.state.birds.birds" :key="bird" :value="bird">
                 {{ bird }}
@@ -19,16 +22,16 @@
             <span class="text-success border-bottom pb-1 border-success">鳥さんの大きさ</span><br>
             <div class="row mt-2">
               <div class="col-4">
-                <input type="radio" value="大型" id="big" v-model="bird.size">
-                <label for="big">大型</label>
+                <input type="radio" value="小型" id="small" v-model="bird.size">
+                <label for="small">小型</label>
               </div>
               <div class="col-4">
                 <input type="radio" value="中型" id="normal" v-model="bird.size">
                 <label for="normal">中型</label>
               </div>
               <div class="col-4">
-                <input type="radio" value="小型" id="small" v-model="bird.size">
-                <label for="small">小型</label>
+                <input type="radio" value="大型" id="big" v-model="bird.size">
+                <label for="big">大型</label>
               </div>
             </div>
           </div>
@@ -68,8 +71,14 @@
           <div class="col-12 my-3">
             <input type="file" @change="imageChange3">
           </div>
+          <div class="col-12">
+            <img :src="bird.image1" alt="" class="preimage mx-1" v-show="bird.image1 != ''">
+            <img :src="bird.image2" alt="" class="preimage mx-1" v-show="bird.image2 != ''">
+            <img :src="bird.image3" alt="" class="preimage mx-1" v-show="bird.image3 != ''">
+          </div>
           <div class="col-12 my-3">
-            <button class="btn btn-primary">投稿</button>
+            <p v-if="error" class="text-danger">入力エラーがあります</p>
+            <button class="btn btn-primary" @click="CreateBird">投稿</button>
           </div>
         </div>
       </div>
@@ -78,30 +87,85 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data(){
     return{
       bird: {
-        type: "start",
-        size: "大型",
+        name: "start",
+        size: "小型",
         age: "10歳未満",
         details: "",
         image1: "",
         image2: "",
-        image3: ""
-      }
+        image3: "",
+        user_id: this.$store.state.session.user_id
+      },
+      error: null,
     }
   },
   methods:{
-    imageChange1(){
-
+    imageChange1(e){
+      if (e.target.files.length >= 1){
+        const images = e.target.files || e.dataTransfer.files
+        const reader = new FileReader(); 
+        reader.readAsDataURL(images[0])
+        reader.onload = (e) => {
+          this.bird.image1 = e.target.result
+        }
+        reader.onerror = (err) => {
+          console.log(err)
+        }
+      } else {
+        this.bird.image1 = "";
+      }
     },
-    imageChange2(){
-
+    imageChange2(e){
+      if (e.target.files.length >= 1){
+        const images = e.target.files || e.dataTransfer.files
+        const reader = new FileReader(); 
+        reader.readAsDataURL(images[0])
+        reader.onload = (e) => {
+          this.bird.image2 = e.target.result
+        }
+        reader.onerror = (err) => {
+          console.log(err)
+        }
+      } else {
+        this.bird.image2 = "";
+      }
     },
-    imageChange3(){
-
+    imageChange3(e){
+      if (e.target.files.length >= 1){
+        const images = e.target.files || e.dataTransfer.files
+        const reader = new FileReader(); 
+        reader.readAsDataURL(images[0])
+        reader.onload = (e) => {
+          this.bird.image3 = e.target.result
+        }
+        reader.onerror = (err) => {
+          console.log(err)
+        }
+      } else {
+        this.bird.image3 = "";
+      }
+    },
+    CreateBird(){
+      axios.post(`http://localhost:3000/birds`, this.bird)
+      .then(response => {
+        this.$store.commit('add_success_message', response.data.message)
+        this.$router.push(`/birds`)
+        })
+        .catch(err => {
+          console.log(err.response)
+          this.error = true
+          this.$store.state.errors = err.response.data.message
+      })
     }
+  },
+   beforeRouteLeave(to, from, next){
+    this.$store.state.errors = null
+    next();
   }
 }
 </script>
@@ -109,5 +173,11 @@ export default {
 <style scoped>
   .navber-color{
     background-color: #FFFFDD;
+  }
+
+  .preimage{
+    width:100px;
+    height:100px;
+    object-fit: cover;
   }
 </style>

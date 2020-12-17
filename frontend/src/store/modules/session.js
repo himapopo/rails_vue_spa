@@ -1,6 +1,6 @@
 const state = {
   user_id: "",
-    user_name: ""
+  user_name: ""
 };
 
 const mutations = {

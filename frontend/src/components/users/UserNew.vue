@@ -87,7 +87,10 @@ export default {
         reader.onerror = (error) => { reject(error) } //読み込み失敗時 reject関数実行時の引数を入れる
       })
     }
+  },
+  beforeRouteLeave(to, from, next){
+    this.$store.state.errors = null
+    next();
   }
-
 }
 </script>
