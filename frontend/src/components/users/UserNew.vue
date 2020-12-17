@@ -2,9 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col-7 mx-auto">
-        <div class="row text-center my-5">
-          <div class="col-12 text-danger" v-for="(error, index) in $store.state.errors" :key="index">
-            <p class="text-danger">{{ error }}</p>
+        <div class="row text-center">
+          <div class="col-12 text-danger" v-for="(value, index) in $store.state.errors" :key="index">
+            <span class="text-danger">{{ index + 1 }}：{{ value }}</span>
           </div>
           <div class="col-12 my-2">
             <h2>会員登録</h2>
@@ -56,9 +56,11 @@ export default {
     CreateUser(){
       axios.post(`http://localhost:3000/users`, this.user_params)
       .then(response => {
-        this.$store.state.users = response.data.data,
-        this.$store.state.message = response.data.message
-        this.$router.push('/')
+        console.log(response)
+        this.$store.commit('add_success_message', response.data.message)
+        this.$store.commit('add_session', String(response.data.data.id))
+        this.$store.commit('add_session_name', response.data.data.name)
+        this.$router.push(`/users/${response.data.data.id}`)
       })
       .catch(error => {
         console.log(this.user_params)
@@ -85,7 +87,10 @@ export default {
         reader.onerror = (error) => { reject(error) } //読み込み失敗時 reject関数実行時の引数を入れる
       })
     }
+  },
+  beforeRouteLeave(to, from, next){
+    this.$store.state.errors = null
+    next();
   }
-
 }
 </script>

@@ -1,32 +1,31 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-//import session from './modules/session';
 import createPersistedState from 'vuex-persistedstate';
+import session from './modules/session';
+import flash from './modules/flash';
+import birds from './modules/birds'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state:{
     users: null,
-    message: null,
     errors: null,
-    userid: "",
   },
   mutations: {
     users(state, users) {
       state.users = users
-    },
-    addsession(state, id){
-      state.userid = id
-    },
-    removesession(state, remove){
-      state.userid = remove
     }
+  },
+  modules:{
+    session,
+    flash,
+    birds
   },
   plugins: [createPersistedState(
     {
       key: 'vue_app',
-      paths: ['userid'],
+      paths: ['session.user_id', 'session.user_name'],
     storage: window.sessionStorage,
   }
   )]
