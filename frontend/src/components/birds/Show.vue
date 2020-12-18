@@ -13,6 +13,9 @@
         <img :src="bird.image2" alt="" class="subimage mx-1" @click="changePreimage2" v-if="bird.image2 != ''">
         <img :src="bird.image3" alt="" class="subimage mx-1" @click="changePreimage3" v-if="bird.image3 != ''">
       </div>
+      <div class="col-12">
+        
+      </div>
       <div class="col-12 bird-details">
         <h1>{{ bird.details }}</h1>
       </div>

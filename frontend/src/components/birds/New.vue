@@ -19,6 +19,23 @@
             </select>
           </div>
           <div class="col-12 my-3">
+            <span class="text-success border-bottom pb-1 border-success">鳥さんの性別</span><br>
+            <div class="row mt-2">
+              <div class="col-4">
+                <input type="radio" value="男の子" v-model="bird.sex">
+                <label for="">男の子</label>
+              </div>
+              <div class="col-4">
+                <input type="radio" value="女の子" v-model="bird.sex">
+                <label for="">女の子</label>
+              </div>
+              <div class="col-4">
+                <input type="radio" value="不明" v-model="bird.sex">
+                <label for="">不明</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 my-3">
             <span class="text-success border-bottom pb-1 border-success">鳥さんの大きさ</span><br>
             <div class="row mt-2">
               <div class="col-4">
@@ -94,6 +111,7 @@ export default {
       bird: {
         name: "start",
         size: "小型",
+        sex: "男の子",
         age: "10歳未満",
         details: "",
         image1: "",

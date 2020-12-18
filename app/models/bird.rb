@@ -6,4 +6,5 @@ class Bird < ApplicationRecord
   validates :size, presence:true
   validates :details, presence:true
   validates :age, presence:true
+  validates :sex, presence:true
 end
