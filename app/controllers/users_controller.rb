@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # userモデルにpassword password_confirmation カラムがないため
   # ラップされる[:user]キーを外す。
-  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar]
+  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar, :area, :profile]
   before_action :user_all
   def index
     render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar, :area, :profile)
   end
 
   def user_all
