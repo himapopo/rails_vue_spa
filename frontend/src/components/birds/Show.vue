@@ -77,13 +77,29 @@ export default {
       this.preimage = this.bird.image3
     }
   },
+  watch:{
+    preimage: {
+      handler() {
+        setTimeout(() => {
+            if(this.preimage == this.bird.image1 && this.bird.image2 != ""){
+              this.preimage = this.bird.image2
+            } else if(this.preimage == this.bird.image2 && this.bird.image3 != "") {
+              this.preimage = this.bird.image3
+            } else if(this.preimage == this.bird.image3){
+              this.preimage = this.bird.image1
+            }
+        }, 5000)
+      },
+      
+    }
+  },
   mounted(){
     this.getBird()
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .mobile-img{
     width: 200px;
     height: 200px;
