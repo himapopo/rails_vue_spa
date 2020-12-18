@@ -18,6 +18,15 @@
             <input type="email" class="form-control" v-model="user_params.email">
           </div>
           <div class="col-12 my-1">
+            <label for="" class="text-info">地域</label>
+            <select name="" id="" v-model="user_params.area"  class="form-control">
+              <option value="start" disabled>種類を選択してください</option>
+              <option v-for="area in $store.state.area" :key="area">
+                {{ area }}
+              </option>
+            </select>
+          </div>
+          <div class="col-12 my-1">
             <label for="" class="text-info">パスワード</label>
             <input type="password" class="form-control" v-model="user_params.password">
           </div>
@@ -28,6 +37,10 @@
           <div class="col-12 my-1">
             <label for="" class="text-info">アバター画像</label>
             <input type="file" class="form-control-file" @change="onImageChange">
+          </div>
+          <div class="col-12 my-1">
+            <label for="" class="text-info">自己紹介</label>
+            <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="user_params.profile"></textarea>   
           </div>
           <div class="col-12 my-3">
             <button class="btn btn-primary btn-block" @click="CreateUser">登録</button>
@@ -49,6 +62,8 @@ export default {
         password: "050507",
         password_confirmation: "050507",
         avatar: "",
+        area: "start",
+        profile: "",
       }
     }
   },
