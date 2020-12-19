@@ -39,10 +39,10 @@ export default {
       axios.post(`http://localhost:3000/sign_in`, this.user_params)
       .then(response => {
         console.log(response)
-        this.$store.commit('add_success_message', response.data.message)
-        this.$store.commit('add_session', String(response.data.data.id))
-        this.$store.commit('add_session_name', response.data.data.name)
-        this.$router.push(`/users/${response.data.data.id}`)
+        this.$store.commit('add_success_message', response.data.message) //flashメッセージ表示
+        this.$store.commit('add_session', String(response.data.data.id)) //user_idをvuexに永続保存
+        this.$store.commit('add_session_name', response.data.data.name) //user_nameをvuexに永続保存
+        this.$router.push(`/users/${response.data.data.id}/birds`) //user詳細ページに移動
       })
       .catch(error => {
         console.log(this.user_params)

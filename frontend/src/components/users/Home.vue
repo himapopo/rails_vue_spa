@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center" v-for="user in $store.state.users" :key="user.email">
-        <router-link :to="{ path: `/users/${user.id}`}">{{ user.name }}：{{ user.email}}</router-link>
+        <router-link :to="{ path: `/users/${user.id}/birds`}">{{ user.name }}：{{ user.email}}</router-link>
       </div>
     </div>
   </div>

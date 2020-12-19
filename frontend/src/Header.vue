@@ -7,30 +7,29 @@
   <div class="collapse navbar-collapse justify-content-end mr-md-5" id="navbarNav">
     <ul class="navbar-nav text-right" v-if="$store.state.session.user_id == ''">
       <li class="nav-item">
-        <a class="nav-link" href='/users/new'>会員登録</a>
+        <a class="nav-link" exact href='/users/new'>会員登録</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href='/sign_in'>ログイン</a>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" :to="{ path: '/birds' }">鳥さん一覧</router-link>
+        <router-link class="nav-link" active-class="link--active" exact :to="{ path: '/birds' }">鳥さん一覧</router-link>
       </li>
     </ul>
     <ul class="navbar-nav text-right" v-else>
       <li class="nav-item">
-        <span class="nav-link disabled">{{ $store.state.session.user_name }}さん</span>
+        <router-link class="nav-link" active-class="link--active" exact :to="{ path: '/birds' }">鳥さん一覧</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" :to="{ path: '/birds' }">鳥さん一覧</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" :to="{ path: '/birds/new' }">鳥さん投稿</router-link>
+        <router-link class="nav-link" active-class="link--active" exact :to="{ path: '/birds/new' }">鳥さん投稿</router-link>
       </li>
       <li class="nav-item">
         <span class="nav-link logout-btn" @click="LogOut">ログアウト</span>
       </li>
       <li class="nav-item">
-        <router-link  class="nav-link" :to="{ path: `/users/${$store.state.session.user_id}` }">マイページ</router-link>
+        <router-link class="nav-link" :to="{ path: `/users/${$store.state.session.user_id}/birds` }">
+        {{ $store.state.session.user_name }}さんのページ
+        </router-link>
       </li>
     </ul>
   </div>
@@ -62,5 +61,10 @@ export default {
 <style scoped>
 .logout-btn{
   cursor: pointer;
+}
+
+.link--active{
+  color:black;
+  font-size:18px;
 }
 </style>
