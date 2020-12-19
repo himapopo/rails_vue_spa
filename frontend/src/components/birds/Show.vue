@@ -66,7 +66,7 @@ export default {
   methods:{
     getBird(){
       axios.get(`http://localhost:3000/birds/${this.id}`)
-      .then(response => {
+      .then(response => { //鳥さん取得
         console.log(response)
         this.bird = response.data.data;
         this.user = response.data.user;
@@ -80,38 +80,42 @@ export default {
     },
     addLike(){
       axios.post(`http://localhost:3000/likes`, { bird_id: this.id, user_id: this.$store.state.session.user_id})
-      .then(response => {
+      .then(response => { //気になる追加ボタン
         this.bird = response.data.data
         this.user = response.data.user
         this.like = response.data.like
+        this.$store.commit('add_success_message', response.data.message)
         this.LikeCheck()
       })
       .catch(err => {
         console.log(err)
       })
     },
-    removeLike(){
-      axios.delete(`http://localhost:3000/likes`, {data: { bird_id: this.id, user_id: this.$store.state.session.user_id}})
-      .then(response => {
-        this.bird = response.data.data
-        this.user = response.data.user
-        this.like = response.data.like
-        this.LikeCheck()
-      })
-      .catch(err => {
-        console.log(err.response)
-      })
+    removeLike(){ //deleteメソッドは{data:}で囲んでデータを送る   気になる削除ボタン
+      if(confirm('気になる鳥さんから外しますか？')){
+        axios.delete(`http://localhost:3000/likes`, {data: { bird_id: this.id, user_id: this.$store.state.session.user_id}})
+        .then(response => {
+          this.bird = response.data.data
+          this.user = response.data.user
+          this.like = response.data.like
+          this.$store.commit('add_success_message', response.data.message)
+          this.LikeCheck()
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+      }
     },
-    changePreimage1(){
+    changePreimage1(){  //プレビュー画像変更
       this.preimage = this.bird.image1
     },
-    changePreimage2(){
+    changePreimage2(){ //プレビュー画像変更
       this.preimage = this.bird.image2
     },
-    changePreimage3(){
+    changePreimage3(){ //プレビュー画像変更
       this.preimage = this.bird.image3
     },
-    LikeCheck(){
+    LikeCheck(){  //気になるしてるかチェック
       for(let i = 0; i < this.like.length; i++){
         if(this.like[i].bird_id == this.id && this.like[i].user_id == this.$store.state.session.user_id){
           this.like_check = true
@@ -126,7 +130,7 @@ export default {
   watch:{
     preimage: {
       handler() {
-        setTimeout(() => {
+        setTimeout(() => {  //プレビュー画像4秒ごとに変更
             if(this.preimage == this.bird.image1 && this.bird.image2 != ""){
               this.preimage = this.bird.image2
             } else if(this.preimage == this.bird.image2 && this.bird.image3 != "") {
