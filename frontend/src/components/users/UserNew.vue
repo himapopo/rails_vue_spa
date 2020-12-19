@@ -43,6 +43,7 @@
             <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="user_params.profile"></textarea>   
           </div>
           <div class="col-12 my-3">
+            <p class="text-danger" v-if="error">入力エラーがあります</p>
             <button class="btn btn-primary btn-block" @click="CreateUser">登録</button>
           </div>
         </div>
@@ -64,7 +65,8 @@ export default {
         avatar: "",
         area: "start",
         profile: "",
-      }
+      },
+      error: null,
     }
   },
   methods:{
@@ -78,9 +80,8 @@ export default {
         this.$router.push(`/users/${response.data.data.id}`)
       })
       .catch(error => {
-        console.log(this.user_params)
-        this.$store.state.errors = error.response.data.message,
-        console.log(error.response)
+        this.error = true
+        this.$store.state.errors = error.response.data.message
       })
     },
     onImageChange(e){
