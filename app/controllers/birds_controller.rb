@@ -1,13 +1,14 @@
 class BirdsController < ApplicationController
   before_action :birds
   def index
-    render json: JSON.pretty_generate({ data: @birds.as_json })
+    render json: JSON.pretty_generate({ data: @birds.as_json }), status: 200
   end
 
   def show
     @bird = Bird.find_by(id: params[:id])
     @user = @bird.user
-    render json: JSON.pretty_generate({ data: @bird.as_json, user: @user.as_json })
+    @likes = @bird.likes
+    render json: JSON.pretty_generate({ data: @bird.as_json, user: @user.as_json, like: @likes.as_json }), status: 200
   end
 
   def create

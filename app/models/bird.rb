@@ -1,6 +1,8 @@
 class Bird < ApplicationRecord
   belongs_to :user
 
+  has_many :likes
+
   validates :image1, presence:true
   validates :name, presence:true
   validates :size, presence:true
