@@ -4,7 +4,7 @@
       <div class="col-12 text-center">
         <h1>鳥さん一覧</h1>
       </div>
-      <div class="col-md-4 text-center" v-for="bird in birds" :key="bird.id">
+      <div class="col-md-4 text-center my-2" v-for="bird in birds" :key="bird.id">
         <div class="row">
           <div class="col-12">
             <router-link :to="{ path: `/birds/${bird.id}`}"><img :src="bird.image1" alt="" class="d-md-none d-block mobile-img mx-auto"></router-link>

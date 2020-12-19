@@ -100,7 +100,7 @@ export default {
   }
 
   .user-birds-enter-active{
-    transition: 1s;
+    transition: 2s;
   }
 
   .user-birds-leave-to{
