@@ -31,7 +31,18 @@
             <p class="p-2 text-secondary">投稿者：{{ user.name }} 連絡先：{{ user.email }}</p>
           </div>
           <div class="col-12 mt-1 text-right">
-            <span class="text-success">気になる<span>✔️</span></span>
+            <span class="text-success" v-if="like_check">気になる
+              <span class="text-dark">
+                <span class="text-warning like-btn" @click="removeLike" v-if="$store.state.session.user_id != ''">✔️</span>
+                {{ like.length }}人
+              </span>
+            </span>
+            <span class="text-success" v-else>気になる
+              <span class="text-dark">
+                <span class="like-btn" @click="addLike" v-if="$store.state.session.user_id != ''">✔️</span>
+                {{ like.length }}人
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -45,13 +56,11 @@ export default {
   props: ['id'],
   data(){
     return{
-      bird: {
-        image1: "",
-      },
-      user:{
-
-      },
+      bird: {},
+      user:{},
+      like: {},
       preimage: "",
+      like_check: false,
     }
   },
   methods:{
@@ -61,10 +70,36 @@ export default {
         console.log(response)
         this.bird = response.data.data;
         this.user = response.data.user;
+        this.like = response.data.like
         this.preimage = response.data.data.image1
+        this.LikeCheck()
       })
       .catch(err => {
         console.log(err)
+      })
+    },
+    addLike(){
+      axios.post(`http://localhost:3000/likes`, { bird_id: this.id, user_id: this.$store.state.session.user_id})
+      .then(response => {
+        this.bird = response.data.data
+        this.user = response.data.user
+        this.like = response.data.like
+        this.LikeCheck()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    removeLike(){
+      axios.delete(`http://localhost:3000/likes`, {data: { bird_id: this.id, user_id: this.$store.state.session.user_id}})
+      .then(response => {
+        this.bird = response.data.data
+        this.user = response.data.user
+        this.like = response.data.like
+        this.LikeCheck()
+      })
+      .catch(err => {
+        console.log(err.response)
       })
     },
     changePreimage1(){
@@ -75,7 +110,18 @@ export default {
     },
     changePreimage3(){
       this.preimage = this.bird.image3
-    }
+    },
+    LikeCheck(){
+      for(let i = 0; i < this.like.length; i++){
+        if(this.like[i].bird_id == this.id && this.like[i].user_id == this.$store.state.session.user_id){
+          this.like_check = true
+          console.log(this.like[i].user_id)
+        }
+      }
+      if(this.like.length == 0){
+          this.like_check = false
+        }
+    },
   },
   watch:{
     preimage: {
@@ -88,9 +134,8 @@ export default {
             } else if(this.preimage == this.bird.image3){
               this.preimage = this.bird.image1
             }
-        }, 5000)
+        }, 4000)
       },
-      
     }
   },
   mounted(){
@@ -121,6 +166,10 @@ export default {
 
   .bird-details{
     white-space: pre;
+  }
+
+  .like-btn{
+    cursor: pointer;
   }
 
 </style>
