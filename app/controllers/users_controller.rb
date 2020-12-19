@@ -52,6 +52,25 @@ class UsersController < ApplicationController
     render json: { data: @users, message: "ログアウトしました" }, status: 200
   end
 
+  def likes
+    @likes = User.find_by(id: params[:user_id]).likes.order(id: :desc).includes(:likes)
+    @birds = @likes.map do |like|
+      like.bird
+    end
+    @likes = @birds.map do |bird|
+      bird.likes
+    end
+    render json: { data: @birds, like: @likes}, status: 200
+  end
+
+  def birds
+    @birds = User.find_by(id: params[:user_id]).birds.order(id: :desc)
+    @likes = @birds.map do |bird|
+      bird.likes
+    end
+    render json: { data: @birds, like: @likes }, status: 200
+  end
+
   private
 
   def user_params

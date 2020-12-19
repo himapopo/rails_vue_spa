@@ -36,6 +36,9 @@
         </div>
       </div>
     </div>
+    <transition name="user-birds" mode="out-in">
+    <router-view class="my-3"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -91,6 +94,23 @@ export default {
 </script>
 
 <style scoped>
+
+  .user-birds-enter{
+    opacity: 0;
+  }
+
+  .user-birds-enter-active{
+    transition: 1s;
+  }
+
+  .user-birds-leave-to{
+    opacity: 0;
+  }
+
+  .user-birds-leave-active{
+    transition: 0s;
+  }
+
   .mobile-img{
     width: 200px;
     height: 200px;

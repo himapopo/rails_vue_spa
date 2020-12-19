@@ -8,6 +8,7 @@ class BirdsController < ApplicationController
     @bird = Bird.find_by(id: params[:id])
     @user = @bird.user
     @likes = @bird.likes
+    # バードモデルに紐付いたユーザーと気になるを別のデータで返す
     render json: JSON.pretty_generate({ data: @bird.as_json, user: @user.as_json, like: @likes.as_json }), status: 200
   end
 
@@ -29,6 +30,7 @@ class BirdsController < ApplicationController
   private 
 
   def birds
+    # バードモデルに紐付けたユーザーも一緒に返す。
     @birds = Bird.joins(:user).includes(:user).order(id: :desc).select('users.name as user_name, users.*')
   end
 

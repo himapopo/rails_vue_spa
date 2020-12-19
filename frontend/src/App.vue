@@ -103,7 +103,7 @@ export default {
 .flash{
   z-index: 2;
   position: fixed;
-  top: 20px;
+  top: 55px;
 }
 
 .bird-nav-btn{
