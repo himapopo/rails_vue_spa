@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def likes
-    @likes = User.find_by(id: params[:user_id]).likes.order(id: :desc).includes(:likes)
+    @likes = User.find_by(id: params[:user_id]).likes.order(id: :desc)
     @birds = @likes.map do |like|
       like.bird
     end

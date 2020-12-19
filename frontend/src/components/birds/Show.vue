@@ -28,7 +28,7 @@
             <h4 class="p-2 border-bottom">{{ bird.details }}</h4>
           </div>
           <div class="col-12 mt-3">
-            <p class="p-2 text-secondary">投稿者：{{ user.name }} 連絡先：{{ user.email }}</p>
+            <p class="p-2 text-secondary">投稿者：『{{ user.name }}』  連絡先：『{{ user.email }}』</p>
           </div>
           <div class="col-12 mt-1 text-right">
             <span class="text-success" v-if="like_check">気になる
@@ -133,6 +133,8 @@ export default {
         setTimeout(() => {  //プレビュー画像4秒ごとに変更
             if(this.preimage == this.bird.image1 && this.bird.image2 != ""){
               this.preimage = this.bird.image2
+            } else if(this.preimage == this.bird.image2 && this.bird.image3 == ""){
+              this.preimage = this.bird.image1
             } else if(this.preimage == this.bird.image2 && this.bird.image3 != "") {
               this.preimage = this.bird.image3
             } else if(this.preimage == this.bird.image3){
