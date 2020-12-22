@@ -11,6 +11,8 @@ import Likes from './components/users/Likes'
 import BirdIndex from './components/birds/Index.vue'
 import BirdNew from './components/birds/New'
 import BirdShow from './components/birds/Show'
+// Error
+import ErrorPage from './components/Error'
 Vue.use(Router)
 
 export default new Router ({
@@ -25,6 +27,7 @@ export default new Router ({
     ] },
     { path: '/birds', component: BirdIndex },
     { path: '/birds/new', component: BirdNew },
-    { path: '/birds/:id', component: BirdShow, props: true}
+    { path: '/birds/:id', component: BirdShow, props: true},
+    { path: '*', component: ErrorPage }
   ]
 })
