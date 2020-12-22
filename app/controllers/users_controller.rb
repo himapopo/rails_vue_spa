@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # userモデルにpassword password_confirmation カラムがないため
   # ラップされる[:user]キーを外す。
-  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar, :area, :profile]
+  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar, :area, :profile, :cookie]
   before_action :user_all
   def index
     render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
@@ -34,9 +34,11 @@ class UsersController < ApplicationController
   end
 
   def sign_in
-    render json: { data: @users, message: "ログインしてます"}, status: 404 if session[:user_id] != nil 
+    return if session[:user_id] != nil
+    # render json: { data: @users, message: "ログインしてます"}, status: 404 
     if @user = User.find_by(email: params[:email])
       if @user.authenticate(params[:password])
+        cookies.permanent.signed[:user_id] = @user.id if params[:cookie] != nil
         session[:user_id] = @user.id
         render json: { data: @user, message: "ログインしました"}, status: 200
       else
@@ -49,6 +51,7 @@ class UsersController < ApplicationController
 
   def sign_out
     session[:user_id] = nil
+    cookies[:user_id] = nil
     render json: { data: @users, message: "ログアウトしました" }, status: 200
   end
 
@@ -74,7 +77,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar, :area, :profile)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar, :area, :profile, :cookie)
   end
 
   def user_all
