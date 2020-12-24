@@ -4,17 +4,20 @@
       <div class="col-12 text-center">
         <h1>鳥さん一覧</h1>
       </div>
-      <div class="col-md-4 text-center" v-for="bird in birds" :key="bird.id">
+      <div class="col-md-4 text-center my-2" v-for="bird in birds" :key="bird.id">
         <div class="row">
           <div class="col-12">
-            <img :src="bird.image1" alt="" class="d-md-none d-block mobile-img mx-auto">
-            <img :src="bird.image1" alt="" class="d-md-block d-none pc-img mx-auto">
+            <router-link :to="{ path: `/birds/${bird.id}`}"><img :src="bird.image1" alt="" class="d-md-none d-block mobile-img mx-auto"></router-link>
+            <router-link :to="{ path: `/birds/${bird.id}`}"><img :src="bird.image1" alt="" class="d-md-block d-none pc-img mx-auto"></router-link>
           </div>
           <div class="col-12">
-            <p>{{ bird.name }}</p>
+            <span>{{ bird.name }}</span>
           </div>
           <div class="col-12">
-            <p class="text-secondary">投稿者様：『{{ bird.user_name }}』</p>
+            <span class="text-secondary">投稿者様：『{{ bird.user_name }}』</span>
+          </div>
+          <div class="col-12">
+            <span class="text-secondary">{{ bird.area }}</span>
           </div>
         </div>
       </div>

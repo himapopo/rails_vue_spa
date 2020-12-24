@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # userモデルにpassword password_confirmation カラムがないため
   # ラップされる[:user]キーを外す。
-  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar]
+  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar, :area, :profile, :cookie]
   before_action :user_all
   def index
     render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
@@ -34,9 +34,12 @@ class UsersController < ApplicationController
   end
 
   def sign_in
-    render json: { data: @users, message: "ログインしてます"}, status: 404 if session[:user_id] != nil 
+    return if session[:user_id] != nil
+    # render json: { data: @users, message: "ログインしてます"}, status: 404 
     if @user = User.find_by(email: params[:email])
       if @user.authenticate(params[:password])
+        @user.update(cookie: params[:cookie])
+        cookies.permanent.signed[:user_id] = @user.id if @user.cookie == true
         session[:user_id] = @user.id
         render json: { data: @user, message: "ログインしました"}, status: 200
       else
@@ -49,13 +52,37 @@ class UsersController < ApplicationController
 
   def sign_out
     session[:user_id] = nil
+    if cookies.signed[:user_id] != nil
+      @user = User.find_by(id: cookies.signed[:user_id])
+      cookies[:user_id] = nil
+      @user.update(cookie: false)
+    end
     render json: { data: @users, message: "ログアウトしました" }, status: 200
+  end
+
+  def likes
+    @likes = User.find_by(id: params[:user_id]).likes.order(id: :desc)
+    @birds = @likes.map do |like|
+      like.bird
+    end
+    @likes = @birds.map do |bird|
+      bird.likes
+    end
+    render json: { data: @birds, like: @likes}, status: 200
+  end
+
+  def birds
+    @birds = User.find_by(id: params[:user_id]).birds.order(id: :desc)
+    @likes = @birds.map do |bird|
+      bird.likes
+    end
+    render json: { data: @birds, like: @likes }, status: 200
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar, :area, :profile, :cookie)
   end
 
   def user_all

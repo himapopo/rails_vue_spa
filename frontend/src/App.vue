@@ -8,7 +8,7 @@
     <span @click="navshow" class="bird-nav-btn mr-md-5 flash-close" v-if="birdnav">検索メニュー非表示▲</span>
     <transition name="flash-fade">
       <div class="col-12 text-center flash" v-if="$store.state.flash.success">
-        <span class="text-success">{{ $store.state.flash.success_message }}</span>
+        <span class="text-success bg-white">{{ $store.state.flash.success_message }}</span>
       </div>
     </transition>
     <div class="col-12 text-center flash">
@@ -102,8 +102,8 @@ export default {
 
 .flash{
   z-index: 2;
-  position: absolute;
-  top: 20px;
+  position: fixed;
+  top: 55px;
 }
 
 .bird-nav-btn{

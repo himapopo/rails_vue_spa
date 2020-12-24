@@ -22,20 +22,23 @@
             </div>
           </div>
           <div class="col-md-8">
-            <div class="row text-center">
+            <div class="row text-center ml-2">
               <div class="col-12">
-                <p>{{ user.name }}</p>
-              </div>
-            </div>
-            <div class="row text-center">
-              <div class="col-12">
-                <p>{{ user.email }}</p>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">ユーザーネーム：{{ user.name }}</li>
+                  <li class="list-group-item">連絡先：{{ user.email }}</li>
+                  <li class="list-group-item">地域：{{ user.area }}</li>
+                  <li class="list-group-item profile border-bottom">{{ user.profile }}</li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <transition name="user-birds" mode="out-in">
+    <router-view class="my-3"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -46,10 +49,6 @@ export default {
   data(){
     return {
       user: {
-        id: "",
-        name: "",
-        email: "",
-        avatar: "",
       },
       newavatar: "",
       no_avatar: ""
@@ -59,10 +58,7 @@ export default {
     getUser(){
       axios.get(`http://localhost:3000/users/${this.id}`)
       .then(response => {
-        this.user.id = response.data.data.id,
-        this.user.avatar = response.data.data.avatar,
-        this.user.name = response.data.data.name,
-        this.user.email = response.data.data.email
+        this.user = response.data.data
         if (this.user.avatar == ''){
           this.no_avatar = "/dog.jpg"
         }
@@ -71,9 +67,7 @@ export default {
     imagePost(){
       axios.post(`http://localhost:3000/users/imagechange/${this.id}`, {avatar: this.newavatar})
       .then(response => {
-        this.user.avatar = response.data.data.avatar,
-        this.user.name = response.data.data.name,
-        this.user.email = response.data.data.email
+        this.user = response.data.data
       })
       .catch(err => {
         console.log(err.response)
@@ -100,6 +94,23 @@ export default {
 </script>
 
 <style scoped>
+
+  .user-birds-enter{
+    opacity: 0;
+  }
+
+  .user-birds-enter-active{
+    transition: 2s;
+  }
+
+  .user-birds-leave-to{
+    opacity: 0;
+  }
+
+  .user-birds-leave-active{
+    transition: 0s;
+  }
+
   .mobile-img{
     width: 200px;
     height: 200px;
@@ -110,5 +121,9 @@ export default {
     width: 250px;
     height: 250px;
     object-fit: cover;
+  }
+
+  .profile{
+    white-space: pre;
   }
 </style>

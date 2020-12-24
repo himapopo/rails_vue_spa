@@ -14,6 +14,9 @@
             <label for="" class="text-info">パスワード</label>
             <input type="password" class="form-control" v-model="user_params.password">
           </div>
+          <div class="col-12 my-1">
+            <input type="checkbox" class="form-check-input" true-value=true false-value=flase v-model="user_params.cookie">ログイン状態を記憶する
+          </div>
           <div class="col-12 my-3">
             <button class="btn btn-primary btn-block" @click="LoginUser">ログイン</button>
           </div>
@@ -31,6 +34,7 @@ export default {
       user_params: {
         email: "",
         password: "",
+        cookie: null
       }
     }
   },
@@ -39,10 +43,17 @@ export default {
       axios.post(`http://localhost:3000/sign_in`, this.user_params)
       .then(response => {
         console.log(response)
-        this.$store.commit('add_success_message', response.data.message)
-        this.$store.commit('add_session', String(response.data.data.id))
-        this.$store.commit('add_session_name', response.data.data.name)
-        this.$router.push(`/users/${response.data.data.id}`)
+        if (response.status == 200){
+          if (response.data.data.cookie == true){
+            this.$store.commit('add_cookie', String(response.data.data.id))
+          }
+        this.$store.commit('add_success_message', response.data.message) //flashメッセージ表示
+        this.$store.commit('add_session', String(response.data.data.id)) //user_idをvuexに永続保存
+        this.$store.commit('add_session_name', response.data.data.name) //user_nameをvuexに永続保存
+        this.$router.push(`/users/${response.data.data.id}/birds`) //user詳細ページに移動
+        } else {
+          this.$store.commit('add_error_message', "ログインしています")
+        }
       })
       .catch(error => {
         console.log(this.user_params)
@@ -54,6 +65,15 @@ export default {
   beforeRouteLeave(to, from, next){
     this.$store.commit('remove_error_message')
     next();
+  },
+  beforeRouteEnter(to, from, next){
+    next(vm => {
+      if(vm.$store.state.session.user_id != "" || vm.$store.state.session.cookie != ""){
+      vm.$router.push('/')
+      }else{
+      next()
+    }
+    })
   }
 }
 </script>
