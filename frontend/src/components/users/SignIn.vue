@@ -15,7 +15,7 @@
             <input type="password" class="form-control" v-model="user_params.password">
           </div>
           <div class="col-12 my-1">
-            <input type="checkbox" class="form-check-input" true-value=true false-value=flase v-model="user_params.cookie">ログイン状態を記憶する
+            <span>※ログアウトしない限りログイン状態は記憶されます</span>
           </div>
           <div class="col-12 my-3">
             <button class="btn btn-primary btn-block" @click="LoginUser">ログイン</button>
@@ -34,7 +34,6 @@ export default {
       user_params: {
         email: "",
         password: "",
-        cookie: null
       }
     }
   },
@@ -44,9 +43,6 @@ export default {
       .then(response => {
         console.log(response)
         if (response.status == 200){
-          if (response.data.data.cookie == true){
-            this.$store.commit('add_cookie', String(response.data.data.id))
-          }
         this.$store.commit('add_success_message', response.data.message) //flashメッセージ表示
         this.$store.commit('add_session', String(response.data.data.id)) //user_idをvuexに永続保存
         this.$store.commit('add_session_name', response.data.data.name) //user_nameをvuexに永続保存
@@ -68,7 +64,7 @@ export default {
   },
   beforeRouteEnter(to, from, next){
     next(vm => {
-      if(vm.$store.state.session.user_id != "" || vm.$store.state.session.cookie != ""){
+      if(vm.$store.state.session.user_id != ""){
       vm.$router.push('/')
       }else{
       next()

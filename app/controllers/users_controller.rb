@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   # ラップされる[:user]キーを外す。
   wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar, :area, :profile, :cookie]
   before_action :user_all
+  before_action :check_current_user, only: %i[ imagechange sign_out ]
   def index
     render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
   end
@@ -10,7 +11,7 @@ class UsersController < ApplicationController
   def create 
     @user = User.new(user_params)
     if @user.save
-      session[:user_id] = @user.id
+      cookies.permanent.signed[:user_id] = @user.id
       render json: {data: @user, message: "登録完了"}, status: 200
     else
       render json: {data: @user, message: @user.errors.full_messages}, status: 400
@@ -34,13 +35,11 @@ class UsersController < ApplicationController
   end
 
   def sign_in
-    return if session[:user_id] != nil
+    return if cookies.signed[:user_id] != nil
     # render json: { data: @users, message: "ログインしてます"}, status: 404 
     if @user = User.find_by(email: params[:email])
       if @user.authenticate(params[:password])
-        @user.update(cookie: params[:cookie])
-        cookies.permanent.signed[:user_id] = @user.id if @user.cookie == true
-        session[:user_id] = @user.id
+        cookies.permanent.signed[:user_id] = @user.id
         render json: { data: @user, message: "ログインしました"}, status: 200
       else
         render json: { message: "パスワード又はメールアドレスが間違っています"}, status: 400
@@ -51,12 +50,7 @@ class UsersController < ApplicationController
   end
 
   def sign_out
-    session[:user_id] = nil
-    if cookies.signed[:user_id] != nil
-      @user = User.find_by(id: cookies.signed[:user_id])
-      cookies[:user_id] = nil
-      @user.update(cookie: false)
-    end
+    cookies[:user_id] = nil
     render json: { data: @users, message: "ログアウトしました" }, status: 200
   end
 
@@ -87,5 +81,11 @@ class UsersController < ApplicationController
 
   def user_all
     @users = User.all.order(id: :desc)
+  end
+
+  def check_current_user
+    return unless cookies.signed[:user_id] == nil
+
+    render json: { message: "権限がありません" }, status: 404
   end
 end
