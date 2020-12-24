@@ -34,7 +34,7 @@ export default new Vuex.Store({
     createPersistedState({
       key: 'vue_app',
       paths: ['session.user_id', 'session.user_name'],
-    storage: window.sessionStorage
+    storage: window.localStorage
     }),
     createPersistedState({
       key: 'vue_cookie',
