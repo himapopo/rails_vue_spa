@@ -30,11 +30,16 @@ export default new Vuex.Store({
     flash,
     birds
   },
-  plugins: [createPersistedState(
-    {
+  plugins: [
+    createPersistedState({
       key: 'vue_app',
       paths: ['session.user_id', 'session.user_name'],
-    storage: window.sessionStorage,
-  }
-  )]
+    storage: window.sessionStorage
+    }),
+    createPersistedState({
+      key: 'vue_cookie',
+      paths: ['session.cookie'],
+      storage: window.localStorage
+    })
+  ],
 })

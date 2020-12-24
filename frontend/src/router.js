@@ -18,8 +18,12 @@ Vue.use(Router)
 export default new Router ({
   mode: "history",
   routes: [
-    { path: '/', component: Home },
-    { path: '/users/new', component: UserNew },
+    { path: '/',
+     component: Home,
+     },
+    { path: '/users/new',
+     component: UserNew,
+    },
     { path: '/sign_in', component: SignIn },
     { path: '/users/:id', component: UserShow, props:true, children:[
       { path: 'birds', component: Birds, props: true },
