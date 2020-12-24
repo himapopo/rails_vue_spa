@@ -5,18 +5,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end mr-md-5" id="navbarNav">
-    <ul class="navbar-nav text-right" v-if="$store.state.session.user_id == ''">
-      <li class="nav-item">
-        <a class="nav-link" exact href='/users/new'>会員登録</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href='/sign_in'>ログイン</a>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" active-class="link--active" exact :to="{ path: '/birds' }">鳥さん一覧</router-link>
-      </li>
-    </ul>
-    <ul class="navbar-nav text-right" v-else>
+    <ul class="navbar-nav text-right" v-if="$store.state.session.user_id != '' || $store.state.session.cookie != ''">
       <li class="nav-item">
         <router-link class="nav-link" active-class="link--active" exact :to="{ path: '/birds' }">鳥さん一覧</router-link>
       </li>
@@ -30,6 +19,17 @@
         <router-link class="nav-link" :to="{ path: `/users/${$store.state.session.user_id}/birds` }">
         {{ $store.state.session.user_name }}さんのページ
         </router-link>
+      </li>
+    </ul>
+    <ul class="navbar-nav text-right" v-else>
+      <li class="nav-item">
+        <a class="nav-link" exact href='/users/new'>会員登録</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href='/sign_in'>ログイン</a>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" active-class="link--active" exact :to="{ path: '/birds' }">鳥さん一覧</router-link>
       </li>
     </ul>
   </div>
@@ -46,6 +46,7 @@ export default {
         this.$store.commit('add_success_message', response.data.message)
         this.$store.commit('remove_session', '')
         this.$store.commit('remove_session_name', '')
+        this.$store.commit('remove_cookie')
         this.$router.push('/sign_in', ).catch(err => {
           console.log(err)
         })

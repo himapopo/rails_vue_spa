@@ -38,7 +38,8 @@ class UsersController < ApplicationController
     # render json: { data: @users, message: "ログインしてます"}, status: 404 
     if @user = User.find_by(email: params[:email])
       if @user.authenticate(params[:password])
-        cookies.permanent.signed[:user_id] = @user.id if params[:cookie] != nil
+        @user.update(cookie: params[:cookie])
+        cookies.permanent.signed[:user_id] = @user.id if @user.cookie == true
         session[:user_id] = @user.id
         render json: { data: @user, message: "ログインしました"}, status: 200
       else
@@ -51,7 +52,11 @@ class UsersController < ApplicationController
 
   def sign_out
     session[:user_id] = nil
-    cookies[:user_id] = nil
+    if cookies.signed[:user_id] != nil
+      @user = User.find_by(id: cookies.signed[:user_id])
+      cookies[:user_id] = nil
+      @user.update(cookie: false)
+    end
     render json: { data: @users, message: "ログアウトしました" }, status: 200
   end
 
