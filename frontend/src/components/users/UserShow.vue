@@ -68,7 +68,7 @@ export default {
       },
       followees: {},
       followers: {},
-      followcheck: true,
+      followcheck: false,
       newavatar: "",
       no_avatar: "",
     }
@@ -82,6 +82,7 @@ export default {
     getUser(){  // URLのIDからユーザー取得
       axios.get(`http://localhost:3000/users/${this.id}`)
       .then(response => {
+        console.log(response)
         this.followees = response.data.followees
         this.followers = response.data.followers
         this.user = response.data.data
@@ -115,10 +116,7 @@ export default {
     Following(){ // フォローする
       axios.post(`http://localhost:3000/follows`, { user_id: this.id, follow_id: this.$store.state.session.user_id })
       .then(response => {
-        console.log(response)
-        this.followees = response.data.followees
-        this.followers = response.data.followers
-        this.FollowCheck()
+        this.getUser()
         this.$store.commit('add_success_message', response.data.message)
       })
       .catch(err => {
@@ -128,9 +126,7 @@ export default {
     UnFollow(){ //フォロー外す
       axios.delete(`http://localhost:3000/follows`, {data: {user_id: this.id, follow_id: this.$store.state.session.user_id}})
       .then(response => {
-        this.followees = response.data.followees
-        this.followers = response.data.followers
-        this.FollowCheck()
+        this.getUser()
         this.$store.commit('add_success_message', response.data.message)
       })
       .catch(err => {
@@ -139,8 +135,11 @@ export default {
     },
     FollowCheck(){  // ログイン中のユーザーがフォロー中かチェック
       for(let i = 0; i < this.followers.length; i++){
-        if(this.followers[i].follow_id == this.$store.state.session.user_id){
+        if(this.followers[i].id == this.$store.state.session.user_id){
           this.followcheck = true
+          break;
+        } else {
+          this.followcheck = false
         }
       }
       if(this.followers.length == 0){

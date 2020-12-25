@@ -120,6 +120,9 @@ export default {
         if(this.like[i].bird_id == this.id && this.like[i].user_id == this.$store.state.session.user_id){
           this.like_check = true
           console.log(this.like[i].user_id)
+          break;
+        } else {
+          this.like_check = false
         }
       }
       if(this.like.length == 0){
