@@ -20,7 +20,13 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    render json: { data: @user }, status: 200
+    @followees = @user.followees.map do |followee|
+      followee.user
+    end
+    @followers = @user.followers.map do |follower|
+      follower.follow
+    end
+    render json: { data: @user, followees: @followees, followers: @followers }, status: 200
   end
 
   def imagechange

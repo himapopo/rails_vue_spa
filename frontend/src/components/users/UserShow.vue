@@ -29,13 +29,20 @@
                   <li class="list-group-item">連絡先：{{ user.email }}</li>
                   <li class="list-group-item">地域：{{ user.area }}</li>
                   <li class="list-group-item profile border-bottom">{{ user.profile }}</li>
-                  <li class="list-group-item profile border-bottom"><span class="btn btn-sm btn-primary">フォローする</span></li>
+                  <li class="list-group-item profile border-bottom" v-if="id != $store.state.session.user_id && !followcheck">
+                    <span class="btn btn-sm btn-primary" @click="Following">フォローする</span>
+                  </li>
+                  <li class="list-group-item profile border-bottom" v-if="id != $store.state.session.user_id && followcheck">
+                    <span>フォロー済み：</span>
+                    <span class="btn btn-sm btn-secondary" @click="UnFollow">フォローをはずす
+                    </span>
+                  </li>
                   <li class="list-group-item profile border-bottom">
                     <router-link :to="{ path: `/users/${id}/follower` }" active-class="link--active">
-                      フォロワー一覧
+                      フォロワー一覧（{{ followers.length }}）
                     </router-link>
                     <router-link :to="{ path: `/users/${id}/followee` }" active-class="link--active">
-                      フォロワー中一覧
+                      フォロー中一覧（{{ followees.length }}）
                     </router-link>
                   </li>
                 </ul>
@@ -59,21 +66,28 @@ export default {
     return {
       user: {
       },
+      followees: {},
+      followers: {},
+      followcheck: false,
       newavatar: "",
-      no_avatar: ""
+      no_avatar: "",
     }
   },
   methods:{
-    getUser(){
+    getUser(){  // URLのIDからユーザー取得
       axios.get(`http://localhost:3000/users/${this.id}`)
       .then(response => {
+        console.log(response)
+        this.followees = response.data.followees
+        this.followers = response.data.followers
         this.user = response.data.data
+        this.FollowCheck()
         if (this.user.avatar == ''){
           this.no_avatar = "/dog.jpg"
         }
       })
     },
-    imagePost(){
+    imagePost(){   //画像変更
       axios.post(`http://localhost:3000/users/imagechange/${this.id}`, {avatar: this.newavatar})
       .then(response => {
         this.user = response.data.data
@@ -82,7 +96,7 @@ export default {
         console.log(err.response)
       })
     },
-    imageChange(e){
+    imageChange(e){  //画像ファイル読みこみ
       const images = e.target.files || e.dataTransfer.files
       const reader = new FileReader(); 
       reader.readAsDataURL(images[0])
@@ -93,9 +107,41 @@ export default {
       reader.onerror = (err) => {
         console.log(err)
       }
+    },
+    Following(){ // フォローする
+      axios.post(`http://localhost:3000/follows`, { user_id: this.id, follow_id: this.$store.state.session.user_id })
+      .then(response => {
+        console.log(response)
+        this.followees = response.data.followees
+        this.followers = response.data.followers
+        this.FollowCheck()
+        this.$store.commit('add_success_message', response.data.message)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    UnFollow(){ //フォロー外す
+      axios.delete(`http://localhost:3000/follows`, {data: {user_id: this.id, follow_id: this.$store.state.session.user_id}})
+      .then(response => {
+        this.followees = response.data.followees
+        this.followers = response.data.followers
+        this.FollowCheck()
+        this.$store.commit('add_success_message', response.data.message)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    FollowCheck(){  // ログイン中のユーザーがフォロー中かチェック
+      for(let i = 0; i < this.followers.length; i++){
+        if(this.followers[i].id == this.$store.state.session.user_id){
+          this.followcheck = true
+        }
+      }
     }
   },
-  mounted(){
+  mounted(){  //コンポーネンと読み込み時ユーザー取得
     this.getUser();
   }
 

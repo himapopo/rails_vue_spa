@@ -12,4 +12,10 @@ class User < ApplicationRecord
   validates :area, presence:true
   validates :profile, presence:true
   
+  def follow(user)
+    if self.id != user.id
+      self.followees.find_or_create_by(user_id: user.id)
+    end
+  end
+
 end
