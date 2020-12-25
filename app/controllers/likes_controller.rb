@@ -11,13 +11,12 @@ class LikesController < ApplicationController
 
 
   def destroy
-    puts params
     if @like = Like.find_by(like_params)
       @like.destroy
       render json: {data: @bird, like: @bird.likes, user: @bird.user, message: "気になる鳥さんから外しました" }, status: 200
-   else
-    render json: { message: "エラーです"}, status: 400
-   end
+    else
+      render json: { message: "エラーです"}, status: 400
+    end
   end
 
   private 

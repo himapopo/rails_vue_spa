@@ -14,8 +14,12 @@ class FollowsController < ApplicationController
 
   def follow_user
     @user = User.find_by(id: params[:follow][:user_id])
-    @followees = @user.followees
-    @followers = @user.followers
+    @followees = @user.followees.map do |followee|
+      followee.user
+    end
+    @followers = @user.followers.map do |follower|
+      follower.follow
+    end
     @current_user = User.find_by(id: params[:follow][:follow_id])
   end
 end
