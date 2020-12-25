@@ -68,16 +68,20 @@ export default {
       },
       followees: {},
       followers: {},
-      followcheck: false,
+      followcheck: true,
       newavatar: "",
       no_avatar: "",
+    }
+  },
+  watch:{
+    $route(){
+      this.getUser();
     }
   },
   methods:{
     getUser(){  // URLのIDからユーザー取得
       axios.get(`http://localhost:3000/users/${this.id}`)
       .then(response => {
-        console.log(response)
         this.followees = response.data.followees
         this.followers = response.data.followers
         this.user = response.data.data
@@ -135,16 +139,18 @@ export default {
     },
     FollowCheck(){  // ログイン中のユーザーがフォロー中かチェック
       for(let i = 0; i < this.followers.length; i++){
-        if(this.followers[i].id == this.$store.state.session.user_id){
+        if(this.followers[i].follow_id == this.$store.state.session.user_id){
           this.followcheck = true
         }
+      }
+      if(this.followers.length == 0){
+        this.followcheck = false
       }
     }
   },
   mounted(){  //コンポーネンと読み込み時ユーザー取得
     this.getUser();
-  }
-
+  },
 }
 </script>
 
