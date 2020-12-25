@@ -18,4 +18,9 @@ class User < ApplicationRecord
     end
   end
 
+  def unfollow(user)
+    foolow = self.followees.find_by(user_id: user.id)
+    foolow.destroy if foolow
+  end
+
 end
