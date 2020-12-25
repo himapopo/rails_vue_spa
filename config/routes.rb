@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :follows, only: [:destroy, :create]
+  resource :follows, only: [:destroy, :create]
   resource :likes, only: %i[create destroy]
   resources :birds, only: %i[index destroy show update create]
   resources :users, only: %i[index destroy create update show] do
