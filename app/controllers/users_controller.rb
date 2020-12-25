@@ -73,6 +73,14 @@ class UsersController < ApplicationController
     render json: { data: @birds, like: @likes }, status: 200
   end
 
+  def followees
+    
+  end
+
+  def followers
+    
+  end
+
   private
 
   def user_params

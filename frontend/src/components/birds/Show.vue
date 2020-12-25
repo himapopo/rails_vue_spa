@@ -28,7 +28,7 @@
             <h4 class="p-2 border-bottom">{{ bird.details }}</h4>
           </div>
           <div class="col-12 mt-3">
-            <p class="p-2 text-secondary">投稿者：『{{ user.name }}』  連絡先：『{{ user.email }}』</p>
+            <p class="p-2 text-secondary">投稿者：『<router-link :to="{ path: `/users/${user.id}/birds` }">{{ user.name }}</router-link>』  連絡先：『{{ user.email }}』</p>
           </div>
           <div class="col-12 mt-1 text-right">
             <span class="text-success" v-if="like_check">気になる

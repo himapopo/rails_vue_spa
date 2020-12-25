@@ -29,6 +29,15 @@
                   <li class="list-group-item">連絡先：{{ user.email }}</li>
                   <li class="list-group-item">地域：{{ user.area }}</li>
                   <li class="list-group-item profile border-bottom">{{ user.profile }}</li>
+                  <li class="list-group-item profile border-bottom"><span class="btn btn-sm btn-primary">フォローする</span></li>
+                  <li class="list-group-item profile border-bottom">
+                    <router-link :to="{ path: `/users/${id}/follower` }" active-class="link--active">
+                      フォロワー一覧
+                    </router-link>
+                    <router-link :to="{ path: `/users/${id}/followee` }" active-class="link--active">
+                      フォロワー中一覧
+                    </router-link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -125,5 +134,10 @@ export default {
 
   .profile{
     white-space: pre;
+  }
+
+  .link--active{
+    color:black;
+    font-size:18px;
   }
 </style>
