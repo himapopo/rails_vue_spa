@@ -22,5 +22,4 @@ class User < ApplicationRecord
     foolow = self.followees.find_by(user_id: user.id)
     foolow.destroy if foolow
   end
-
 end
