@@ -3,9 +3,9 @@ class User < ApplicationRecord
   attr_accessor :remember_token
 
   has_many :birds, dependent: :destroy
-  has_many :likes
-  has_many :followers, class_name: "Follow", foreign_key: "user_id"
-  has_many :followees, class_name: "Follow", foreign_key: "follow_id"
+  has_many :likes, dependent: :destroy
+  has_many :followers, class_name: "Follow", foreign_key: "user_id", dependent: :destroy
+  has_many :followees, class_name: "Follow", foreign_key: "follow_id", dependent: :destroy
   has_secure_password
 
   validates :email, uniqueness: true, presence: true
