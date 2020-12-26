@@ -20,12 +20,12 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @followees = @user.followees.map do |followee|
-      followee.user
-    end
-    @followers = @user.followers.map do |follower|
-      follower.follow
-    end
+    @followees = @user.followees.map(&:user) # &←に変数が入れられる
+    # @followees = @user.followees.map do | followee |
+    #  followee.user
+    # end
+    # ↑の省略記法
+    @followers = @user.followers.map(&:follow)
     render json: { data: @user, followees: @followees, followers: @followers }, status: 200
   end
 
