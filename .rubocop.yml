@@ -21,3 +21,6 @@ Style/Documentation:
 
 Style/AsciiComments:
   Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false

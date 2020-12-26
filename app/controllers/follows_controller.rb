@@ -1,7 +1,7 @@
 class FollowsController < ApplicationController
   before_action :follow_user
   def create
-    if @follow = @current_user.follow(@user)
+    if @current_user.follow(@user)
       render json: { message: "ユーザーをフォローしました", followees: @followees, followers: @followers }, status: 200
     else
       render json: { message: "エラーです" }, status: 404
