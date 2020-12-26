@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # userモデルにpassword password_confirmation カラムがないため
   # ラップされる[:user]キーを外す。
-  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation, :avatar, :area, :profile, :cookie]
+  wrap_parameters :user, include: %i[name email password password_confirmation avatar area profile cookie]
   before_action :user_all
   before_action :check_current_user, only: %i[ imagechange sign_out ]
   def index
@@ -79,11 +79,9 @@ class UsersController < ApplicationController
     render json: { data: @birds, like: @likes }, status: 200
   end
 
-  def followees
-  end
+  def followees; end
 
-  def followers
-  end
+  def followers; end
 
   private
 

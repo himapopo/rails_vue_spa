@@ -12,3 +12,11 @@ AllCops:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
