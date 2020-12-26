@@ -2,15 +2,15 @@ class FollowsController < ApplicationController
   before_action :follow_user
   def create
     if @follow = @current_user.follow(@user)
-      render json: { message: "ユーザーをフォローしました" , followees: @followees, followers: @followers}, status: 200
+      render json: { message: "ユーザーをフォローしました", followees: @followees, followers: @followers }, status: 200
     else
       render json: { message: "エラーです" }, status: 404
     end
   end
 
   def destroy
-    if  @current_user.unfollow(@user)
-      render json: { message: "フォローを外しました" , followees: @followees, followers: @followers}, status: 200
+    if @current_user.unfollow(@user)
+      render json: { message: "フォローを外しました", followees: @followees, followers: @followers }, status: 200
     else
       render json: { message: "エラーです" }, status: 404
     end
