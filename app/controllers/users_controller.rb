@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :user_all
   before_action :check_current_user, only: %i[imagechange sign_out]
   def index
-    render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
+    render json: JSON.pretty_generate({ data: @users.as_json, message: "ユーザー一覧です" }), status: 200
   end
 
   def create
