@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # ラップされる[:user]キーを外す。
   wrap_parameters :user, include: %i[name email password password_confirmation avatar area profile cookie]
   before_action :user_all
-  before_action :check_current_user, only: %i[ imagechange sign_out ]
+  before_action :check_current_user, only: %i[imagechange sign_out]
   def index
     render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
   end
@@ -12,9 +12,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       cookies.permanent.signed[:user_id] = @user.id
-      render json: {data: @user, message: "登録完了"}, status: 200
+      render json: { data: @user, message: "登録完了" }, status: 200
     else
-      render json: {data: @user, message: @user.errors.full_messages}, status: 400
+      render json: { data: @user, message: @user.errors.full_messages }, status: 400
     end
   end
 
@@ -34,24 +34,25 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.avatar = params[:avatar]
     if @user.save
-      render json: {data: @user, message: "画像変更"}, status: 200
+      render json: { data: @user, message: "画像変更" }, status: 200
     else
-      render json: {data: @postuser, message: "画像変更できませんでした"}, status: 400
+      render json: { data: @postuser, message: "画像変更できませんでした" }, status: 400
     end
   end
 
   def sign_in
-    return if cookies.signed[:user_id] != nil
+    return unless cookies.signed[:user_id].nil?
+
     # render json: { data: @users, message: "ログインしてます"}, status: 404
     if @user = User.find_by(email: params[:email])
       if @user.authenticate(params[:password])
         cookies.permanent.signed[:user_id] = @user.id
-        render json: { data: @user, message: "ログインしました"}, status: 200
+        render json: { data: @user, message: "ログインしました" }, status: 200
       else
-        render json: { message: "パスワード又はメールアドレスが間違っています"}, status: 400
+        render json: { message: "パスワード又はメールアドレスが間違っています" }, status: 400
       end
     else
-      render json: { message: "パスワード又はメールアドレスが間違っています"}, status: 400
+      render json: { message: "パスワード又はメールアドレスが間違っています" }, status: 400
     end
   end
 
@@ -68,7 +69,7 @@ class UsersController < ApplicationController
     @likes = @birds.map do |bird|
       bird.likes
     end
-    render json: { data: @birds, like: @likes}, status: 200
+    render json: { data: @birds, like: @likes }, status: 200
   end
 
   def birds
@@ -94,7 +95,7 @@ class UsersController < ApplicationController
   end
 
   def check_current_user
-    return unless cookies.signed[:user_id] == nil
+    return unless cookies.signed[:user_id].nil?
 
     render json: { message: "権限がありません" }, status: 404
   end
