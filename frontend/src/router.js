@@ -30,8 +30,8 @@ export default new Router ({
     { path: '/users/:id', component: UserShow, props:true, children:[
       { path: 'birds', component: Birds, props: true },
       { path: 'likes', component: Likes, props: true },
-      { path: 'follower', component: Follower, props: true },
-      { path: 'followee', component: Followee, props: true },
+      { path: 'follower', component: Follower, props: true, name: 'users-follower' },
+      { path: 'followee', component: Followee, props: true, name: 'users-followee' },
     ] },
     { path: '/birds', component: BirdIndex },
     { path: '/birds/new', component: BirdNew },

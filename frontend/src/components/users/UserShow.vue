@@ -29,7 +29,8 @@
                   <li class="list-group-item">連絡先：{{ user.email }}</li>
                   <li class="list-group-item">地域：{{ user.area }}</li>
                   <li class="list-group-item profile border-bottom">{{ user.profile }}</li>
-                  <li class="list-group-item profile border-bottom" v-if="id != $store.state.session.user_id && !followcheck">
+                  <li class="list-group-item profile border-bottom" 
+                  v-if="$store.state.session.user_id != '' && id != $store.state.session.user_id && !followcheck">
                     <span class="btn btn-sm btn-primary" @click="Following">フォローする</span>
                   </li>
                   <li class="list-group-item profile border-bottom" v-if="id != $store.state.session.user_id && followcheck">
@@ -38,10 +39,10 @@
                     </span>
                   </li>
                   <li class="list-group-item profile border-bottom">
-                    <router-link :to="{ path: `/users/${id}/follower` }" active-class="link--active">
+                    <router-link :to="{ name: 'users-follower', params: {followers: followers, id: id} }" active-class="link--active">
                       フォロワー一覧（{{ followers.length }}）
                     </router-link>
-                    <router-link :to="{ path: `/users/${id}/followee` }" active-class="link--active">
+                    <router-link :to="{ name: 'users-followee', params: { followees: followees, id: id } }" active-class="link--active">
                       フォロー中一覧（{{ followees.length }}）
                     </router-link>
                   </li>
@@ -82,7 +83,6 @@ export default {
     getUser(){  // URLのIDからユーザー取得
       axios.get(`http://localhost:3000/users/${this.id}`)
       .then(response => {
-        console.log(response)
         this.followees = response.data.followees
         this.followers = response.data.followers
         this.user = response.data.data
