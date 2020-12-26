@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     render json: JSON.pretty_generate({ data: @users.as_json }), status: 200
   end
 
-  def create 
+  def create
     @user = User.new(user_params)
     if @user.save
       cookies.permanent.signed[:user_id] = @user.id
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.avatar = params[:avatar]
     if @user.save
-      render json: {data: @user, message: "画像変更"}, status: 200  
+      render json: {data: @user, message: "画像変更"}, status: 200
     else
       render json: {data: @postuser, message: "画像変更できませんでした"}, status: 400
     end
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   def sign_in
     return if cookies.signed[:user_id] != nil
-    # render json: { data: @users, message: "ログインしてます"}, status: 404 
+    # render json: { data: @users, message: "ログインしてます"}, status: 404
     if @user = User.find_by(email: params[:email])
       if @user.authenticate(params[:password])
         cookies.permanent.signed[:user_id] = @user.id
@@ -80,11 +80,9 @@ class UsersController < ApplicationController
   end
 
   def followees
-    
   end
 
   def followers
-    
   end
 
   private

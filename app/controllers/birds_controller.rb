@@ -15,7 +15,7 @@ class BirdsController < ApplicationController
   def create
     @bird = Bird.new(bird_params)
     if @bird.save
-      render json: { data: @bird, message: "鳥さんを投稿しました" }, status: 200  
+      render json: { data: @bird, message: "鳥さんを投稿しました" }, status: 200
     else
       render json: { data: @bird, message: @bird.errors.full_messages }, status: 400
     end
@@ -27,11 +27,11 @@ class BirdsController < ApplicationController
   def destroy
   end
 
-  private 
+  private
 
   def birds
     # バードモデルに紐付けたユーザーも一緒に返す。
-    @birds = Bird.joins(:user).includes(:user).order(id: :desc).select('users.name as user_name, users.*')
+    @birds = Bird.joins(:user).includes(:user).order(id: :desc).select("users.name as user_name, users.*")
   end
 
   def bird_params

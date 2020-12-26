@@ -1,0 +1,14 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+  - 'db/schema.rb'
+  - 'db/migrate/**'
+  - 'config/**'
+  - 'bin/**'
+  - 'vendor/**/*'
+  - 'spec/rails_helper.rb'
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
