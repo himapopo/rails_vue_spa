@@ -40,7 +40,6 @@ export default {
       .then(response => {
         this.birds = response.data.data
         this.likes = response.data.like
-        console.log(response)
       })
       .catch(err => {
         console.log(err)

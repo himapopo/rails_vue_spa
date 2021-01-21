@@ -20,7 +20,6 @@ export default {
     GetUsers(){
       axios.get('http://localhost:3000/users')
       .then(response => {
-        console.log(response)
         this.$store.commit("users", response.data.data)
       })
       .catch(error => {
