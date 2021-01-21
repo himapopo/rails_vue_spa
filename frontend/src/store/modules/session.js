@@ -1,6 +1,6 @@
 const state = {
   user_id: "",
-  user_name: ""
+  user_name: "",
 };
 
 const mutations = {
@@ -15,7 +15,7 @@ const mutations = {
   },
   remove_session_name(state, remove){
     state.user_name = remove
-  }
+  },
 };
 
 export default {
