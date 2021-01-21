@@ -18,15 +18,6 @@
             <input type="email" class="form-control" v-model="user_params.email">
           </div>
           <div class="col-12 my-1">
-            <label for="" class="text-info">地域</label>
-            <select name="" id="" v-model="user_params.area"  class="form-control">
-              <option value="start" disabled>種類を選択してください</option>
-              <option v-for="area in $store.state.area" :key="area">
-                {{ area }}
-              </option>
-            </select>
-          </div>
-          <div class="col-12 my-1">
             <label for="" class="text-info">パスワード</label>
             <input type="password" class="form-control" v-model="user_params.password">
           </div>
@@ -38,12 +29,7 @@
             <label for="" class="text-info">アバター画像</label>
             <input type="file" class="form-control-file" @change="onImageChange">
           </div>
-          <div class="col-12 my-1">
-            <label for="" class="text-info">自己紹介</label>
-            <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="user_params.profile"></textarea>   
-          </div>
           <div class="col-12 my-3">
-            <p class="text-danger" v-if="error">入力エラーがあります</p>
             <button class="btn btn-primary btn-block" @click="CreateUser">登録</button>
           </div>
         </div>
@@ -63,10 +49,7 @@ export default {
         password: "050507",
         password_confirmation: "050507",
         avatar: "",
-        area: "start",
-        profile: "",
-      },
-      error: null,
+      }
     }
   },
   methods:{
@@ -77,11 +60,12 @@ export default {
         this.$store.commit('add_success_message', response.data.message)
         this.$store.commit('add_session', String(response.data.data.id))
         this.$store.commit('add_session_name', response.data.data.name)
-        this.$router.push(`/users/${response.data.data.id}/birds`)
+        this.$router.push(`/users/${response.data.data.id}`)
       })
       .catch(error => {
-        this.error = true
-        this.$store.state.errors = error.response.data.message
+        console.log(this.user_params)
+        this.$store.state.errors = error.response.data.message,
+        console.log(error.response)
       })
     },
     onImageChange(e){
